@@ -7,92 +7,92 @@ const maillotsData = [
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Arrêt sur image",
         competences: "Démarrer un pied au sol. Conduire un vélo en ligne droite. Ralentir, freiner et s'arrêter dans une zone délimitée.",
         but: "Effectuer l'aller-retour en respectant les arrêts sans poser le pied au 1/2 tour",
-        contenus: "Réguler sa vitesse. Freiner avec les 2 mains en même temps. Ralentir pour faire le 1/2 tour en regardant loin devant. Rouler en ligne droite devant soi.",
-        evolutions: "S'arrêter avant de faire le 1/2 tour. Alterner les pieds d'appuis au départ. Utiliser 2 doigts maximum sur les freins. Utiliser le frein arrière au 1er plot et le frein avant au 2e."
+        contenus: "Réguler sa vitesse. [cite: 2] Freiner avec les 2 mains en même temps. Ralentir pour faire le 1/2 tour en regardant loin devant. [cite: 3] Rouler en ligne droite devant soi.",
+        evolutions: "S'arrêter avant de faire le 1/2 tour. Alterner les pieds d'appuis au départ. [cite: 4] Utiliser 2 doigts maximum sur les freins. Utiliser le frein arrière au 1er plot et le frein avant au 2e."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Entonnoir",
         competences: "Démarrer un pied au sol. Conduire un vélo en ligne droite. Ralentir, freiner et s'arrêter dans une zone délimitée.",
         but: "Sortir de l'entonnoir dans faire tomber les plots",
-        contenus: "Réguler sa vitesse. Conserver son équilibre lors du pédalage. Regarder loin devant.",
-        evolutions: "Jouer sur la largeur de l'entonnoir. Réaliser l'exercice en lâchant une main."
+        contenus: "Réguler sa vitesse. [cite: 5] Conserver son équilibre lors du pédalage. Regarder loin devant.",
+        evolutions: "Jouer sur la largeur de l'entonnoir. [cite: 6] Réaliser l'exercice en lâchant une main."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Slalom",
-        competences: "Conduire un vélo sur un parcours de slalom simple. Prendre des informations en roulant.",
+        competences: "Conduire un vélo sur un parcours de slalom simple. Prendre des informations en roulant. [cite: 7]",
         but: "Effectuer le slalom dans renverser les plots et sans poser le pied à terre",
-        contenus: "Orienter son regard vers le prochain plot. Réguler sa vitesse. Lever la pédale du côté du virage. Arrêter de pédaler au moment du virage.",
-        evolutions: "Réaliser 5 parcours de longueur différente. Remplacer les plots par des piquets plus haut."
+        contenus: "Orienter son regard vers le prochain plot. [cite: 8] Réguler sa vitesse. Lever la pédale du côté du virage. [cite: 9] Arrêter de pédaler au moment du virage.",
+        evolutions: "Réaliser 5 parcours de longueur différente. [cite: 10] Remplacer les plots par des piquets plus haut."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Défi d'équipe",
-        competences: "Démarrer un pied au sol. Conduire un vélo sur un parcours de slalom. Prendre des informations en roulant.",
-        but: "Effectuer le slalom sans renverser les plots pour faire gagner des points à son équipe.",
+        competences: "Démarrer un pied au sol. [cite: 11] Conduire un vélo sur un parcours de slalom. Prendre des informations en roulant. [cite: 12]",
+        but: "Effectuer le slalom sans renverser les plots pour faire gagner des points à son équipe. [cite: 13]",
         contenus: "Orienter son regard vers le prochain plot. Réguler sa vitesse. Arrêter de pédaler au moment du virage.",
-        evolutions: "Changer les équipes. Intégrer un temps limite pour réaliser le slalom."
+        evolutions: "Changer les équipes. [cite: 14] Intégrer un temps limite pour réaliser le slalom."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Virage",
-        competences: "Effectuer un virage à 90°. Changer ses vitesses. Prise d'information en roulant (sonore et/ou visuelle).",
-        but: "Laisser de la distance avec celui qui est devant. Changer de vitesse à chaque plot.",
-        contenus: "Maitriser sa vitesse en regardant son partenaire. Tourner en s'équilibrant. Visualiser le trajet de la roue.",
-        evolutions: "Alterner avec un signal visuel (prise d'information). Faire passer le parcours sur un sol différent (herbe / sable). Modifier la distance du parcours. Intégrer un chronomètre."
+        competences: "Effectuer un virage à 90°. Changer ses vitesses. [cite: 15] Prise d'information en roulant (sonore et/ou visuelle).",
+        but: "Laisser de la distance avec celui qui est devant. [cite: 16] Changer de vitesse à chaque plot.",
+        contenus: "Maitriser sa vitesse en regardant son partenaire. Tourner en s'équilibrant. [cite: 17] Visualiser le trajet de la roue.",
+        evolutions: "Alterner avec un signal visuel (prise d'information). [cite: 18] Faire passer le parcours sur un sol différent (herbe / sable). Modifier la distance du parcours. [cite: 19] Intégrer un chronomètre."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "\"Jacques a dit\"",
-        competences: "Rouler en enlevant un appui. Prendre des information. Etre attentif en roulant.",
+        competences: "Rouler en enlevant un appui. Prendre des information. [cite: 20] Etre attentif en roulant.",
         but: "Réaliser la bonne action en fonction de Jacques a dit",
-        contenus: "Se concentrer pour effectuer la bonne action. Créer de la vitesse pour rester en équilibre. Gérer son espace.",
-        evolutions: "Consignes demandées. Mettre en place un système d'élimination."
+        contenus: "Se concentrer pour effectuer la bonne action. [cite: 21] Créer de la vitesse pour rester en équilibre. Gérer son espace.",
+        evolutions: "Consignes demandées. Mettre en place un système d'élimination. [cite: 22]"
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "L'escargot",
         competences: "Conduire son vélo en ligne droite, s'équilibrer, ralentir",
         but: "Rouler le plus doucement possible sans poser le pied au sol",
-        contenus: "Se mettre droit sur son vélo. Donner de légers coups de pédales pour génerer un peu de vitesse. Positionner ses 2 doigts sur les freins pour pouvoir les utiliser raidement.",
-        evolutions: "Enlever un appui. Réaliser l'exercice assit sur le vélo."
+        contenus: "Se mettre droit sur son vélo. [cite: 23] Donner de légers coups de pédales pour génerer un peu de vitesse. [cite: 24] Positionner ses 2 doigts sur les freins pour pouvoir les utiliser raidement.",
+        evolutions: "Enlever un appui. [cite: 25] Réaliser l'exercice assit sur le vélo."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Chaise musicale",
         competences: "S'équilibrer, ralentir. Etre à l'écoute.",
         but: "Au coup de sifflet, se rapprocher d'un plot libre pour ne pas se faire éliminer.",
-        contenus: "Etre attentif au coup de sifflet. Diriger son vélo vers un plot libre.",
+        contenus: "Etre attentif au coup de sifflet. [cite: 26] Diriger son vélo vers un plot libre.",
         evolutions: "Nombre de plots."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "1, 2, 3 soleil",
         competences: "Conduire son vélo en ligne droite, s'équilibrer, démarrer un pied au sol, ralentir, freiner, s'arrêter.",
         but: "Etre le premier à franchir la ligne",
-        contenus: "Se mettre droit sur son vélo. Etre attentif au signal sonore. Freiner rapidement pour poser un appui au sol.",
-        evolutions: "Enlever un pied. Jouer sur la taille de l'espace"
+        contenus: "Se mettre droit sur son vélo. [cite: 27] Etre attentif au signal sonore. Freiner rapidement pour poser un appui au sol.",
+        evolutions: "Enlever un pied. [cite: 28] Jouer sur la taille de l'espace"
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Le cavalier",
         competences: "Rouler dans un couloir étroit en position cavalier. Conduire son vélo en ligne droite, s'équilibrer.",
         but: "Rouler dans les 4 couloirs sans sortir et sans toucher de plots.",
         contenus: "Adapter sa vitesse. S'équilibrer, se félchir. Reculer le bassin au niveau de la selle.",
-        evolutions: "Largeur des couloirs. Temps limite pour franchir les 4 couloirs."
+        evolutions: "Largeur des couloirs. [cite: 29] Temps limite pour franchir les 4 couloirs."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Tout terrain",
         competences: "Franchir un petit obstacle",
-        but: "Franchir les obstacles sans toucher avec la roue avant.",
-        contenus: "Adapter sa vitesse. Soulever la roue avant en basculant le poids du corps vers l'arrière. Décoller ses fesses du vélo et tirer le guidon vers soi.",
-        evolutions: "Placer une latte surélevée. Mettre un obstacle dans un virage. Varier les intervalles entre obstacles. Soulever la roue arrière. Monter sur un trottoir."
+        but: "Franchir les obstacles sans toucher avec la roue avant. [cite: 30]",
+        contenus: "Adapter sa vitesse. Soulever la roue avant en basculant le poids du corps vers l'arrière. [cite: 31] Décoller ses fesses du vélo et tirer le guidon vers soi.",
+        evolutions: "Placer une latte surélevée. Mettre un obstacle dans un virage. [cite: 32] Varier les intervalles entre obstacles. Soulever la roue arrière. Monter sur un trottoir."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Le peloton",
         competences: "Prendre des informations en roulant",
         but: "Se trouver dans la zone au même moment.",
-        contenus: "S'adapter à l'espace en groupe. Réguler sa vitesse en fonction des autres. Définir un chef de groupe. Prendre des informations visuelles.",
+        contenus: "S'adapter à l'espace en groupe. [cite: 33] Réguler sa vitesse en fonction des autres. Définir un chef de groupe. Prendre des informations visuelles. [cite: 34]",
         evolutions: "Modifier la taille du groupe, la longueur du circuit."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Attaque dans le peloton",
-        competences: "Prendre des informations en roulant. Changer ses vitesses. Prendre un virage à 90°",
+        competences: "Prendre des informations en roulant. Changer ses vitesses. [cite: 35] Prendre un virage à 90°",
         but: "Suivre \"l'attaque\" du meneur",
-        contenus: "Etre prêt à accélerer en poussant fort sur les pédales. Se mettre en danseuse au moment de l'accélération. Freiner rapidement.",
-        evolutions: "Changer de meneur. Intégrer un virage à 90°."
+        contenus: "Etre prêt à accélerer en poussant fort sur les pédales. [cite: 36] Se mettre en danseuse au moment de l'accélération. Freiner rapidement.",
+        evolutions: "Changer de meneur. [cite: 37] Intégrer un virage à 90°."
     },
     {
         maillot: "MAILLOT BLANC", etape: "ÉVALUATION", nom_exercice: "Evaluation 1",

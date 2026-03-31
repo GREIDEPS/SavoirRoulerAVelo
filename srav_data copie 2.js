@@ -4,114 +4,82 @@
 // Les défis Maillots (Blanc, Vert, Jaune)
 const maillotsData = [
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Arrêt sur image",
-        competences: "Démarrer un pied au sol. Conduire un vélo en ligne droite. Ralentir, freiner et s'arrêter dans une zone délimitée.",
-        but: "Effectuer l'aller-retour en respectant les arrêts sans poser le pied au 1/2 tour",
-        contenus: "Réguler sa vitesse. Freiner avec les 2 mains en même temps. Ralentir pour faire le 1/2 tour en regardant loin devant. Rouler en ligne droite devant soi.",
-        evolutions: "S'arrêter avant de faire le 1/2 tour. Alterner les pieds d'appuis au départ. Utiliser 2 doigts maximum sur les freins. Utiliser le frein arrière au 1er plot et le frein avant au 2e."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Le facteur", competences: "Piloter - Lâcher une main",
+        but: "Etre capable de lâcher une main pour attraper un objet, pour le poser, le lancer.",
+        contenus: "Organiser un circuit avec une zone centrale dans laquelle on place des balles de tennis de couleur différente. Chaque couleur correspond à une caisse/boite aux lettres située aux extrémités du plateau. Le facteur doit distribuer les bonnes lettres dans les bonnes boites.",
+        evolutions: "Plusieurs facteurs en même temps pour travailler les croisements et les trajectoires.\nRétrécir la boite ou l'éloigner.\nLe facteur donne sa lettre à un autre facteur qui la distribue."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Entonnoir",
-        competences: "Démarrer un pied au sol. Conduire un vélo en ligne droite. Ralentir, freiner et s'arrêter dans une zone délimitée.",
-        but: "Sortir de l'entonnoir dans faire tomber les plots",
-        contenus: "Réguler sa vitesse. Conserver son équilibre lors du pédalage. Regarder loin devant.",
-        evolutions: "Jouer sur la largeur de l'entonnoir. Réaliser l'exercice en lâchant une main."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Les déménageurs", competences: "Piloter - Lâcher une main",
+        but: "Etre capable de lâcher une main pour attraper un objet, le transporter et le poser.",
+        contenus: "Réaliser un parcours avec un objet dans une main. Cet objet ne doit pas pouvoir se bloquer dans les rayons ou être un danger en cas de chute.",
+        evolutions: "Augmenter la distance.\nDéfinir des portes de passage."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Slalom",
-        competences: "Conduire un vélo sur un parcours de slalom simple. Prendre des informations en roulant.",
-        but: "Effectuer le slalom dans renverser les plots et sans poser le pied à terre",
-        contenus: "Orienter son regard vers le prochain plot. Réguler sa vitesse. Lever la pédale du côté du virage. Arrêter de pédaler au moment du virage.",
-        evolutions: "Réaliser 5 parcours de longueur différente. Remplacer les plots par des piquets plus haut."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Le relais", competences: "Vitesse - Equilibre",
+        but: "Aller le plus vite possible.",
+        contenus: "Parcours en relais par équipes de 2 ou 3 sur le principe d'un biathlon. Slalom à l'aller / Ligne droite au retour.",
+        evolutions: "Rétrécir les zones de transmission de relais."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Défi d'équipe",
-        competences: "Démarrer un pied au sol. Conduire un vélo sur un parcours de slalom. Prendre des informations en roulant.",
-        but: "Effectuer le slalom sans renverser les plots pour faire gagner des points à son équipe.",
-        contenus: "Orienter son regard vers le prochain plot. Réguler sa vitesse. Arrêter de pédaler au moment du virage.",
-        evolutions: "Changer les équipes. Intégrer un temps limite pour réaliser le slalom."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Le miroir", competences: "Trajectoire - Vitesse",
+        but: "Etre capable de reproduire les trajectoires et l'allure d'un autre cycliste.",
+        contenus: "Par 2. Un enfant dicte le parcours (trajectoire, allure, zone d'arrêt), l'autre doit faire la même chose.",
+        evolutions: "On peut créer des portes par lesquelles le binôme doit passer."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Virage",
-        competences: "Effectuer un virage à 90°. Changer ses vitesses. Prise d'information en roulant (sonore et/ou visuelle).",
-        but: "Laisser de la distance avec celui qui est devant. Changer de vitesse à chaque plot.",
-        contenus: "Maitriser sa vitesse en regardant son partenaire. Tourner en s'équilibrant. Visualiser le trajet de la roue.",
-        evolutions: "Alterner avec un signal visuel (prise d'information). Faire passer le parcours sur un sol différent (herbe / sable). Modifier la distance du parcours. Intégrer un chronomètre."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Les animaux", competences: "Equilibre - Vitesse",
+        but: "Adapter son allure aux consignes demandées.",
+        contenus: "Tourner en rond ou sur un parcours précis. Un signal sonore annonce l'animal à imiter.\nLe guépard : on pédale le plus vite possible.\nLa tortue : on pédale le plus lentement possible.\nLe singe : on slalome.\nLa chouette : on se déplace en regardant derrière soi.\nLa girafe : on se déplace debout sur les pédales sans s'asseoir sur la selle.",
+        evolutions: "On peut associer un animal à une couleur de plot que l'enseignant lève. Les élèves doivent donc pédaler en levant la tête."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "\"Jacques a dit\"",
-        competences: "Rouler en enlevant un appui. Prendre des information. Etre attentif en roulant.",
-        but: "Réaliser la bonne action en fonction de Jacques a dit",
-        contenus: "Se concentrer pour effectuer la bonne action. Créer de la vitesse pour rester en équilibre. Gérer son espace.",
-        evolutions: "Consignes demandées. Mettre en place un système d'élimination."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Le loup", competences: "Vitesse - Equilibre - Trajectoire",
+        but: "Etre capable de maitriser sa vitesse pour attraper ou fuir.",
+        contenus: "Jeu du loup avec un loup et des petits cochons (les autres cyclistes). Tous les enfants évoluent dans une zone délimitée. Le loup doit toucher les autres enfants pour qu'ils deviennent le loup.\nIl est interdit de lâcher son vélo.",
+        evolutions: "La maison du loup : on intègre une maison (matérialisée par des cerceaux / plots) pour les petits cochons dans laquelle le loup n'a pas le droit d'entrer. Les petits cochons n'ont le droit de rester que 10 secondes dans la maison."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "L'escargot",
-        competences: "Conduire son vélo en ligne droite, s'équilibrer, ralentir",
-        but: "Rouler le plus doucement possible sans poser le pied au sol",
-        contenus: "Se mettre droit sur son vélo. Donner de légers coups de pédales pour génerer un peu de vitesse. Positionner ses 2 doigts sur les freins pour pouvoir les utiliser raidement.",
-        evolutions: "Enlever un appui. Réaliser l'exercice assit sur le vélo."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "1 2 3 Soleil", competences: "Freinage - Equilibre",
+        but: "Etre capable de s'arrêter au bon moment sans perdre l'équilibre.",
+        contenus: "Le maitre du jeu annonce 1 2 3 Soleil. Les autres cyclistes doivent s'arrêter à Soleil et poser un pied par terre en gardant le contrôle du vélo. Si un enfant ne s'arrête pas ou s'il perd le contrôle il repart au départ. Le premier arrivé devient le maitre du jeu.",
+        evolutions: "Donner un signal visuel pour faire travailler la prise d'information de l'enfant."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Chaise musicale",
-        competences: "S'équilibrer, ralentir. Etre à l'écoute.",
-        but: "Au coup de sifflet, se rapprocher d'un plot libre pour ne pas se faire éliminer.",
-        contenus: "Etre attentif au coup de sifflet. Diriger son vélo vers un plot libre.",
-        evolutions: "Nombre de plots."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Les 3 petits cochons", competences: "Démarrage rapide - Freinage",
+        but: "Etre capable de s'arrêter dans une zone définie.",
+        contenus: "Placer de nombreux cerceaux dans l'espace de jeu. Ce sont les maisons des petits cochons. Au signal du loup (l'enseignant), les petits cochons ont 5 secondes pour trouver une maison, se garer à l'intérieur et poser les 2 pieds par terre pour être en sécurité. Si le loup touche un petit cochon avant d'être dans une maison, il perd une vie.",
+        evolutions: "Retirer des maisons à chaque tour."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "1, 2, 3 soleil",
-        competences: "Conduire son vélo en ligne droite, s'équilibrer, démarrer un pied au sol, ralentir, freiner, s'arrêter.",
-        but: "Etre le premier à franchir la ligne",
-        contenus: "Se mettre droit sur son vélo. Etre attentif au signal sonore. Freiner rapidement pour poser un appui au sol.",
-        evolutions: "Enlever un pied. Jouer sur la taille de l'espace"
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Le parcours", competences: "Maitrise de l'ensemble des fondamentaux",
+        but: "Etre capable de réaliser le parcours du bloc 1.",
+        contenus: "Créer le parcours du bloc 1 pour valider l'acquisition de toutes les compétences travaillées.",
+        evolutions: "Le parcours peut se faire sous la forme d'un relais."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Le cavalier",
-        competences: "Rouler dans un couloir étroit en position cavalier. Conduire son vélo en ligne droite, s'équilibrer.",
-        but: "Rouler dans les 4 couloirs sans sortir et sans toucher de plots.",
-        contenus: "Adapter sa vitesse. S'équilibrer, se félchir. Reculer le bassin au niveau de la selle.",
-        evolutions: "Largeur des couloirs. Temps limite pour franchir les 4 couloirs."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Le couloir", competences: "Trajectoire",
+        but: "Etre capable de maitriser sa trajectoire dans un espace réduit.",
+        contenus: "Passer dans un couloir étroit matérialisé par des plots ou un marquage au sol.",
+        evolutions: "Le couloir est de plus en plus étroit."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Tout terrain",
-        competences: "Franchir un petit obstacle",
-        but: "Franchir les obstacles sans toucher avec la roue avant.",
-        contenus: "Adapter sa vitesse. Soulever la roue avant en basculant le poids du corps vers l'arrière. Décoller ses fesses du vélo et tirer le guidon vers soi.",
-        evolutions: "Placer une latte surélevée. Mettre un obstacle dans un virage. Varier les intervalles entre obstacles. Soulever la roue arrière. Monter sur un trottoir."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "L'escargot", competences: "Equilibre - Lenteur",
+        but: "Etre capable de rouler le plus lentement possible, sans poser le pied par terre.",
+        contenus: "Parcours rectiligne dans un couloir plus ou moins large de 10 à 15 m. Chaque enfant part à tour de rôle. Celui qui met le plus de temps à parcourir la distance a gagné.",
+        evolutions: "Diminuer la taille du couloir. S'arrêter pendant 3 secondes lors d'un signal visuel ou sonore de l'enseignant avant de repartir."
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Le peloton",
-        competences: "Prendre des informations en roulant",
-        but: "Se trouver dans la zone au même moment.",
-        contenus: "S'adapter à l'espace en groupe. Réguler sa vitesse en fonction des autres. Définir un chef de groupe. Prendre des informations visuelles.",
-        evolutions: "Modifier la taille du groupe, la longueur du circuit."
+        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "L'objet", competences: "Lâcher une main",
+        but: "Etre capable de lâcher une main pour toucher un objet.",
+        contenus: "Sur un parcours linéaire ou avec des virages légers l'enfant doit venir toucher un objet avec sa main. L'objet peut être tenu par l'enseignant ou posé sur une table/chaise.",
+        evolutions: "On peut matérialiser une porte symbolisant l'obligation de mettre les 2 mains sur le guidon. L'enfant doit donc toucher l'objet, puis remettre sa main avant de passer la porte."
     },
-    {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Attaque dans le peloton",
-        competences: "Prendre des informations en roulant. Changer ses vitesses. Prendre un virage à 90°",
-        but: "Suivre \"l'attaque\" du meneur",
-        contenus: "Etre prêt à accélerer en poussant fort sur les pédales. Se mettre en danseuse au moment de l'accélération. Freiner rapidement.",
-        evolutions: "Changer de meneur. Intégrer un virage à 90°."
-    },
-    {
-        maillot: "MAILLOT BLANC", etape: "ÉVALUATION", nom_exercice: "Evaluation 1",
-        competences: "Toutes",
-        but: "Réaliser le parcours sans erreur",
-        contenus: "",
-        evolutions: ""
-    },
-    {
-        maillot: "MAILLOT BLANC", etape: "ÉVALUATION", nom_exercice: "Evaluation 2",
-        competences: "Toutes",
-        but: "Réaliser le parcours sans erreur",
-        contenus: "",
-        evolutions: ""
-    },
+
+    // --- AUTRES MAILLOTS (Conservés pour éviter les erreurs si vous cliquez dessus) ---
     { maillot: "MAILLOT VERT", etape: "ÉTAPE 1", nom_exercice: "Balle au camp", competences: "Partager l'espace / Piloter / Lâcher une main", but: "Ramener le plus d'objets possible dans son camp.", contenus: "Deux équipes. Des balles ou petits objets sont placés dans une zone neutre au centre. Aller chercher un objet à la fois.", evolutions: "Intégrer des objets rapportant des points différents." },
     { maillot: "MAILLOT JAUNE", etape: "ÉTAPE 1", nom_exercice: "Les pinces à linge", competences: "Pilotage / Lâcher une main", but: "Attraper les pinces à linge des autres enfants tout en gardant les siennes.", contenus: "Chaque enfant a des pinces à linge accrochées dans le dos ou sur les manches. Interdiction formelle de tirer sur les vêtements ou de lâcher les deux mains.", evolutions: "Jouer par équipes de couleurs différentes." }
 ];
-
 const sravData = [
     // --- BLOC 1 : SAVOIR PÉDALER ---
     { 

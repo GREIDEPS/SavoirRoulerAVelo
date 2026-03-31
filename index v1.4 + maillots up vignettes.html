@@ -72,23 +72,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900 h-screen overflow-hidden font-sans transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100">
 
-<div id="app" class="flex h-full relative">
-
-    <transition name="fade">
-        <div v-if="showPdfModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4 sm:p-6 backdrop-blur-sm" @click.self="showPdfModal = false">
-            <div class="bg-white dark:bg-slate-800 w-full max-w-5xl h-[85vh] sm:h-[90vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden relative border-4 border-slate-200 dark:border-slate-700">
-                <div class="flex justify-between items-center p-4 border-b dark:border-slate-700 bg-slate-50 dark:bg-slate-900 shrink-0">
-                    <h3 class="font-black uppercase text-slate-700 dark:text-slate-200"><i class="fas fa-file-pdf text-rose-500 mr-2"></i> Document SRAV</h3>
-                    <button @click="showPdfModal = false" class="w-10 h-10 bg-rose-100 text-rose-600 hover:bg-rose-500 hover:text-white rounded-full flex items-center justify-center transition active:scale-95 shadow-sm">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                <div class="flex-1 w-full bg-slate-200 dark:bg-slate-800">
-                    <iframe :src="currentPdfUrl" class="w-full h-full border-none"></iframe>
-                </div>
-            </div>
-        </div>
-    </transition>
+<div id="app" class="flex h-full">
 
     <aside :class="['bg-slate-900 text-white h-full z-40 transition-all flex flex-col shadow-xl absolute lg:relative border-r border-slate-800 no-print', isSidebarOpen ? 'w-80' : 'w-0 overflow-hidden lg:w-0']" aria-label="Menu principal">
         <div class="p-6 border-b border-slate-800 flex justify-between items-center shrink-0">
@@ -294,9 +278,9 @@
                     </div>
 
                     <div class="flex justify-center md:px-10 gap-6">
-                        <div @click="openPdfModal('docs/PRESENTATION - SRAV.pdf')" class="group w-full md:w-1/2 bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 border-indigo-500 hover:-translate-y-2 aspect-video relative flex items-center justify-center flex-col">
-                            <img src="images/INFOGRAPHIE SRAV.jpg" @error="handleImgError" alt="Livret SRAV" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300">
-                            <div class="absolute bottom-0 w-full bg-black/70 text-white text-center text-xs md:text-sm font-black py-2 backdrop-blur-sm z-10 tracking-widest uppercase">Livret SRAV (PDF)</div>
+                        <div @click="openDocText('Livret_SRAV.pdf')" class="group w-full md:w-1/2 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 border-indigo-500 hover:-translate-y-2 aspect-video relative flex items-center justify-center flex-col gap-4">
+                            <i class="fas fa-file-pdf text-indigo-500 text-6xl"></i>
+                            <span class="font-black uppercase text-slate-600">Livret SRAV (PDF)</span>
                         </div>
                         <div @click="openWarmupList" class="group w-full md:w-1/2 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 border-amber-500 hover:-translate-y-2 aspect-video relative flex items-center justify-center flex-col gap-4">
                             <i class="fas fa-gamepad text-amber-500 text-6xl"></i>
@@ -347,31 +331,19 @@
                     </div>
                 </div>
 
-                <div v-else-if="view === 'warmup'" key="warmup" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div v-for="w in warmups" @click="openWarmupDetail(w)" class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-md overflow-hidden hover:scale-105 transition-all cursor-pointer border-b-8 border-amber-500 relative flex flex-col group">
-                        <img v-if="w.img" :src="'images/' + w.img" @error="handleImgError" class="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition duration-500">
-                        <div class="p-4 sm:p-6 text-center flex-1 flex items-center justify-center bg-white dark:bg-slate-800 z-10">
-                            <div class="font-black text-sm sm:text-lg uppercase text-slate-800 dark:text-white leading-tight">{{ w.nom }}</div>
+                <div v-else-if="view === 'warmup'" key="warmup" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div v-for="w in warmups" @click="openWarmupDetail(w)" class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-md overflow-hidden hover:scale-105 transition-all cursor-pointer border-2 border-transparent hover:border-amber-400">
+                        <div class="p-8 text-center">
+                            <i class="fas fa-bicycle text-amber-500 text-4xl mb-4"></i>
+                            <div class="font-bold text-lg uppercase text-slate-700 dark:text-slate-300 leading-tight">{{ w.nom }}</div>
                         </div>
                     </div>
                 </div>
 
-                <div v-else-if="view === 'warmup_detail' && selectedWarmup" key="warmup_detail" class="max-w-4xl mx-auto pb-20 space-y-6">
-                    <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-[2.5rem] shadow-sm border-t-8 border-amber-500 flex-grow">
-                        <h2 class="text-2xl md:text-3xl font-black uppercase text-slate-800 dark:text-white mb-6 text-center">{{ selectedWarmup.nom }}</h2>
-                        
-                        <img v-if="selectedWarmup.img" :src="'images/' + selectedWarmup.img" @error="handleImgError" class="w-full max-h-[50vh] object-cover rounded-2xl mb-8 shadow-md">
-                        
-                        <h3 class="text-amber-700 dark:text-amber-500 font-black uppercase text-sm tracking-widest mb-4 flex items-center gap-3"><i class="fas fa-book-open text-xl"></i> Règles du jeu</h3>
-                        <div class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium whitespace-pre-line italic text-base md:text-lg mb-8 bg-amber-50 dark:bg-slate-700/50 p-6 rounded-2xl border border-amber-100 dark:border-slate-600">
-                            {{ selectedWarmup.histoire }}
-                        </div>
-
-                        <div class="flex justify-center" v-if="selectedWarmup.pdf">
-                            <button @click="openPdfModal('docs/' + selectedWarmup.pdf)" class="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-full font-black uppercase tracking-widest shadow-lg flex items-center gap-3 transition transform active:scale-95">
-                                <i class="fas fa-file-pdf text-2xl"></i> Fiche PDF du jeu
-                            </button>
-                        </div>
+                <div v-else-if="view === 'warmup_detail' && selectedWarmup" key="warmup_detail" class="max-w-4xl mx-auto pb-20">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border-l-8 border-amber-500 flex-grow">
+                        <h3 class="text-amber-700 dark:text-amber-500 font-black uppercase text-sm tracking-widest mb-6 flex items-center gap-3"><i class="fas fa-book-open text-xl"></i> Règles du jeu</h3>
+                        <div class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium whitespace-pre-line italic text-lg">{{ selectedWarmup.histoire }}</div>
                     </div>
                 </div>
                 
@@ -502,17 +474,13 @@ createApp({
             touchStartX: 0, touchStartY: 0, touchEndX: 0, touchEndY: 0, openFolders: [],
             warmups: typeof warmupsData !== 'undefined' ? warmupsData : [],
             actionsData: typeof actionsData !== 'undefined' ? actionsData : [],
-            sravDB: typeof sravData !== 'undefined' ? sravData : [],
-            
-            showPdfModal: false,
-            currentPdfUrl: ''
+            sravDB: typeof sravData !== 'undefined' ? sravData : []
         }
     },
     computed: {
         pageTitle() {
             if (this.view === 'circuit') return "MON CIRCUIT SRAV";
             if (this.view === 'warmup') return "JEUX VÉLO";
-            if (this.view === 'warmup_detail') return this.selectedWarmup?.nom;
             if (this.view === 'maillot_liste') return this.selectedMaillot;
             if (this.view === 'maillot_detail') return this.selectedMaillotGame?.nom_exercice;
             if (this.curr) return this.curr.nom;
@@ -564,8 +532,6 @@ createApp({
             else if (this.view === 'elements_list') { this.view = 'actions'; }
             else if (this.view === 'maillot_detail') { this.view = 'maillot_liste'; }
             else if (this.view === 'maillot_liste') { this.goHome(); }
-            else if (this.view === 'warmup_detail') { this.view = 'warmup'; }
-            else if (this.view === 'warmup') { this.goHome(); }
             else this.goHome();
             this.scrollToTop();
         },
@@ -635,10 +601,6 @@ createApp({
         openWarmupList() { this.view = 'warmup'; this.selectedWarmup = null; if(window.innerWidth < 1024) this.isSidebarOpen = false; },
         openWarmupDetail(w) { this.selectedWarmup = w; this.view = 'warmup_detail'; },
         scrollToTop() { this.$nextTick(() => { if(this.$refs.mainScroll) this.$refs.mainScroll.scrollTop = 0; }); },
-        openPdfModal(url) {
-            this.currentPdfUrl = url;
-            this.showPdfModal = true;
-        },
         openDocText(filename) { window.open('docs/' + filename, '_blank'); },
         toggleDarkMode() {
             this.isDarkMode = !this.isDarkMode;
