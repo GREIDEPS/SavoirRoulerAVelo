@@ -1,0 +1,108 @@
+
+
+Mentions Légales - Gymnastique à l'École
+1. Présentation
+Finalité : L’application Gymnastique à l'École est une ressource pédagogique numérique destinée aux professeurs des école, aux enseignants d'Éducation Physique et Sportive (EPS) et à leurs élèves. Elle a pour but d'accompagner l'enseignement de la gymnastique en proposant des démonstrations visuelles des agrès (Sol, Poutre, Barres), des fiches d'échauffement, des progressions pédagogiques (Unités d'Apprentissage DSDEN 77) et le suivi des attendus du "Brevet du petit gymnaste" (DSDEN 93).
+
+2. Éditeur
+[Nom de l'Établissement / Direction des Services Départementaux de l'Éducation Nationale]
+[Adresse complète]
+[Code Postal et Ville]
+Tel : [Numéro de téléphone]
+Email : [Adresse email de contact]
+
+3. Directeur de publication
+Le directeur de la publication est [Nom du Directeur / Responsable de la publication].
+
+4. Hébergement
+L'application est hébergée par : GitHub Pages
+
+5. Protection des données personnelles (RGPD)
+Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi « Informatique et Libertés » du 6 janvier 1978 modifiée, vous disposez d’un droit d’accès, de rectification, de suppression et d’opposition au traitement des données vous concernant.
+Note technique : Cette application est conçue pour être utilisée sans création de compte. Aucune donnée personnelle nominative n'est collectée à votre insu. L'utilisation du "LocalStorage" par le navigateur sert exclusivement à mémoriser vos préférences d'affichage (ex: mode sombre).
+Pour exercer vos droits, veuillez contacter : [Adresse email ou postale du délégué à la protection des données].
+
+6. Droit d'auteur et de reproduction
+L'application utilise des ressources pédagogiques issues des DSDEN 77 (Seine-et-Marne) et DSDEN 93 (Seine-Saint-Denis).
+Les informations et documents présents dans cette application sont destinés à un usage strictement pédagogique, personnel ou professionnel dans le cadre scolaire. Toute utilisation ou reproduction à des fins commerciales ou publicitaires est strictement interdite.
+La reproduction des graphismes, photographies, vidéos et ressources multimédias est soumise à l'accord préalable des auteurs et des directions départementales concernées.
+
+7. Liens vers d'autres sites
+Des liens vers des documents PDF ou des sites officiels de l'Éducation Nationale peuvent être proposés. Ils n'engagent en aucun cas la responsabilité de l'éditeur de l'application quant à leur contenu et ne visent qu'à faciliter l'accès aux ressources officielles sur le sujet.
+
+8. Données statistiques
+L'hébergeur peut procéder à l'analyse anonyme de la fréquentation du site à partir des données de connexion. Les adresses IP ne sont conservées que pour la durée nécessaire à la sécurité du serveur et aux statistiques de consultation (généralement 12 mois).
+
+9. Conditions d'utilisation
+L'utilisateur reconnaît disposer de la compétence et des moyens nécessaires pour accéder et utiliser ce site. L'utilisateur s'engage à ne pas tenter de perturber le fonctionnement du service ou d'extraire de manière massive les contenus multimédias protégés par le droit d'auteur.
+
+10. Graphismes et librairies externes
+L'application utilise les technologies et ressources suivantes :
+
+Vue.js (https://vuejs.org/)
+
+Tailwind CSS (https://tailwindcss.com/)
+
+Font Awesome (https://fontawesome.com/)
+
+Ressources Pédagogiques : DSDEN 77 & DSDEN 93 (EPS).
+
+11. Déclaration d'accessibilité
+L'éditeur de l'application Gymnastique à l'École s'engage à rendre ses services numériques accessibles, conformément à l'article 47 de la loi n° 2005-102 du 11 février 2005.
+
+À cette fin, la présente déclaration d'accessibilité s'applique à l'application disponible à l'adresse suivante : https://www.youtube.com/watch?v=sllLX6wOpg4.
+
+État de conformité
+L'application Gymnastique à l'École est partiellement conforme avec le référentiel général d’amélioration de l’accessibilité (RGAA), version 4.1, en raison des non-conformités et des dérogations énumérées ci-dessous.
+
+Résultats des tests
+L'audit interne des fonctionnalités révèle que :
+
+La structure sémantique est respectée (utilisation de <header>, <nav>, <main>, <aside>, <footer>).
+
+La navigation peut s'effectuer intégralement au clavier.
+
+Les fenêtres modales (vidéos et images) peuvent être fermées via la touche Echap.
+
+Les images et icônes possèdent des alternatives textuelles ou des attributs aria-label.
+
+Le contraste des couleurs est ajustable via le Mode Sombre pour faciliter la lecture.
+
+Contenus non accessibles
+Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :
+
+Vidéos : Certaines vidéos de démonstration ne possèdent pas encore de description audio (audiodescription) ou de transcription textuelle complète.
+
+Documents tiers : Certains documents PDF issus des DSDEN peuvent ne pas être totalement balisés pour les lecteurs d'écran.
+
+Établissement de cette déclaration d'accessibilité
+Cette déclaration a été établie le [Date du jour]. Elle a été révisée le [Date de mise à jour].
+
+Technologies utilisées pour la réalisation de l'application :
+
+HTML5 / CSS3 (Tailwind CSS)
+
+JavaScript (Vue.js 3)
+
+SVG pour les icônes
+
+Stockage local (LocalStorage) pour la mémorisation des préférences d'accessibilité (mode sombre).
+
+Retour d'information et contact
+Si vous n'arrivez pas à accéder à un contenu ou à un service, vous pouvez contacter le responsable de l'application pour être orienté vers une alternative accessible ou obtenir le contenu sous une autre forme.
+
+Envoyer un message : [Votre adresse email]
+
+Contacter : [Nom de votre établissement/service]
+
+Voies de recours
+Cette procédure est à utiliser dans le cas suivant : vous avez signalé au responsable du site internet un défaut d'accessibilité qui vous empêche d'accéder à un contenu ou à un des services du portail et vous n'avez pas obtenu de réponse satisfaisante.
+
+Écrire un message au Défenseur des droits (https://formulaire.defenseurdesdroits.fr/)
+
+Contacter le délégué du Défenseur des droits dans votre région (https://www.defenseurdesdroits.fr/saisir/delegues)
+
+Envoyer un courrier par la poste (gratuit, ne pas mettre de timbre) :
+Défenseur des droits
+Libre réponse 71120
+75342 Paris CEDEX 07

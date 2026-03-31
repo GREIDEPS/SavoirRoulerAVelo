@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+    <title>Savoir Rouler à l'École 🚲</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    screens: { 'xs': '475px' }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="velo_data.js"></script>
+
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .touch-manipulation { touch-action: manipulation; }
+        
+        /* Couleurs Blocs SRAV */
+        .bg-BLOC\\ 1 { background-color: #3b82f6; } .border-BLOC\\ 1 { border-color: #3b82f6; } .text-BLOC\\ 1 { color: #3b82f6; }
+        .bg-BLOC\\ 2 { background-color: #eab308; } .border-BLOC\\ 2 { border-color: #eab308; } .text-BLOC\\ 2 { color: #eab308; }
+        .bg-BLOC\\ 3 { background-color: #ef4444; } .border-BLOC\\ 3 { border-color: #ef4444; } .text-BLOC\\ 3 { color: #ef4444; }
+
+        .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease, transform 0.2s ease; }
+        .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(5px); }
+        .btn-press:active { transform: scale(0.95); }
+        .hover-lift:hover { transform: translateY(-2px); }
+
+        .diff-1 { background-color: #ecfccb; color: #365314; border: 1px solid #bef264; }
+        .diff-2 { background-color: #fef9c3; color: #713f12; border: 1px solid #fde047; }
+        .diff-3 { background-color: #ffedd5; color: #7c2d12; border: 1px solid #fdba74; }
+        .diff-4 { background-color: #fee2e2; color: #7f1d1d; border: 1px solid #fca5a5; }
+        
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 h-screen overflow-hidden font-sans transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100">
+
+<div id="app" class="flex h-full">
+
+    <aside :class="['bg-slate-900 text-white h-full z-40 transition-all flex flex-col shadow-xl absolute lg:relative border-r border-slate-800 no-print', isSidebarOpen ? 'w-80' : 'w-0 overflow-hidden lg:w-0']">
+        <div class="p-6 border-b border-slate-800 flex justify-between items-center shrink-0">
+            <h1 class="font-black italic text-xl uppercase tracking-tighter text-blue-400">Savoir Rouler 🚲</h1>
+            <button @click="isSidebarOpen = false" class="text-slate-500 hover:text-white transition btn-press"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+            <button @click="openModeEnfant" class="w-full text-center p-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl shadow-lg border-2 border-green-200 text-white font-black text-sm uppercase transition transform active:scale-95 mb-4">
+                🧸 Parcours Enfant
+            </button>
+
+            <button @click="view = 'circuit'; if(window.innerWidth < 1024) isSidebarOpen = false;" class="w-full text-left p-3 bg-orange-600/20 hover:bg-orange-600/40 rounded-xl flex items-center justify-between text-orange-400 font-black text-xs uppercase transition border border-orange-900/50">
+                <span class="flex items-center gap-3"><i class="fas fa-route"></i> Mon Parcours</span>
+                <span class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px]">{{ circuit.length }}</span>
+            </button>
+
+            <div v-for="agre in ['BLOC 1', 'BLOC 2', 'BLOC 3']" :key="agre">
+                <div class="flex items-center gap-2 mb-2 font-black text-[10px] tracking-widest uppercase" :class="'text-'+agre">
+                    <div :class="['w-2 h-2 rounded-full', 'bg-'+agre]"></div> {{ agre }}
+                </div>
+                <div v-for="action in getActions(agre)" :key="action">
+                    <button @click="toggleFolder(agre+action)" class="w-full text-left p-2 hover:bg-slate-800 rounded-lg flex justify-between items-center text-xs font-bold transition text-slate-300">
+                        {{ action }} <i :class="['fas fa-chevron-right text-[10px] transition', openFolders.includes(agre+action) ? 'rotate-90 text-blue-400' : '']"></i>
+                    </button>
+                    <div v-show="openFolders.includes(agre+action)" class="ml-4 border-l border-slate-700 pl-2 my-1 space-y-1">
+                        <button v-for="el in getElements(agre, action)" @click="selectElement(el)" :class="['block w-full text-left p-2 text-xs transition rounded', curr?.id === el.id ? 'text-blue-400 font-black bg-slate-800' : 'text-slate-400 hover:text-white hover:bg-slate-800/50']">
+                            {{ el.nom }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-hidden relative bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+        <header v-if="!view.startsWith('enfant_')" class="bg-white dark:bg-slate-800 border-b dark:border-slate-700 p-3 flex flex-col gap-2 shadow-sm shrink-0 z-20 relative no-print">
+            <div class="flex items-center justify-between px-2 lg:px-6 gap-4">
+                <div class="flex items-center gap-3 overflow-hidden flex-1">
+                    <button @click="isSidebarOpen = true" v-show="!isSidebarOpen" class="text-blue-600 dark:text-blue-400 p-2 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-full transition shrink-0">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    <button v-if="view !== 'home'" @click="handleBack" class="btn-press bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-2 rounded-full shadow-sm flex items-center gap-2 transition shrink-0">
+                        <i class="fas fa-arrow-left text-sm"></i> <span class="text-xs font-black uppercase hidden sm:inline">Retour</span>
+                    </button>
+                    <h1 class="font-black uppercase tracking-tight text-sm md:text-xl truncate">{{ pageTitle }}</h1>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button @click="goHome" class="btn-press bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg shadow-md text-[10px] font-black uppercase tracking-widest transition-all">
+                        <i class="fas fa-home"></i> <span class="hidden xs:inline">Accueil</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 lg:p-10 pb-24 lg:pb-10 scroll-smooth" ref="mainScroll">
+            <transition name="fade" mode="out-in">
+                
+                <div v-if="view === 'home'" key="home" class="max-w-6xl mx-auto space-y-12">
+                    <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg p-6 md:p-8 md:mx-10 flex flex-col md:flex-row items-center gap-6 border-t-8 border-blue-500">
+                        <div class="flex-1 text-center md:text-left">
+                            <h2 class="text-xl md:text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-3">
+                                Socle Commun - Savoir Rouler à Vélo
+                            </h2>
+                            <p class="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                                L’application permet d'accompagner l'apprentissage du vélo pour une pratique sécurisée avant l'entrée au collège. Elle s'articule autour des 3 blocs : Savoir Pédaler, Savoir Circuler, et Savoir Rouler à Vélo.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                        <div v-for="a in ['BLOC 1', 'BLOC 2', 'BLOC 3']" @click="selectAgre(a)" :class="['group bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 hover:-translate-y-2 aspect-square flex items-center justify-center p-6 text-center', 'border-'+a]">
+                            <div>
+                                <i class="fas fa-bicycle text-5xl mb-4" :class="'text-'+a"></i>
+                                <h3 class="font-black text-xl uppercase tracking-widest" :class="'text-'+a">{{ a }}</h3>
+                                <p class="text-slate-500 font-bold text-xs mt-2 uppercase">{{ a === 'BLOC 1' ? 'Savoir Pédaler' : (a === 'BLOC 2' ? 'Savoir Circuler' : 'Savoir Rouler à vélo') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'actions'" key="actions" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div v-for="act in actionsData[selectedAgre]" @click="selectAction(act.nom)" :class="['group bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 hover:-translate-y-2 aspect-square p-6 flex items-center justify-center text-center', 'border-'+selectedAgre]">
+                        <h3 class="font-black text-2xl uppercase tracking-widest text-slate-700 dark:text-slate-200">{{act.nom}}</h3>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'elements_list'" key="elements_list" class="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div v-for="el in getElements(selectedAgre, selectedAction)" @click="selectElement(el)" class="bg-white dark:bg-slate-800 rounded-[2rem] shadow-md overflow-hidden hover:border-blue-500 border-2 border-transparent cursor-pointer transition p-4 hover-lift relative flex flex-col items-center justify-center text-center min-h-[150px]">
+                        <div v-if="el.difficulte" :class="getDifficultyClass(el.difficulte)" class="absolute top-3 right-3 z-10 px-2 py-1 rounded-full text-[10px] font-black uppercase shadow-sm border">{{ el.difficulte }}</div>
+                        <i class="fas fa-biking text-4xl text-slate-300 mb-3"></i>
+                        <div class="font-black text-xs uppercase text-slate-700 dark:text-slate-200">{{ el.nom }}</div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'element' && curr" key="element" class="max-w-5xl mx-auto space-y-8 pb-20">
+                    <div class="bg-slate-800 rounded-[3rem] p-10 shadow-2xl flex flex-col items-center justify-center text-white" :class="'bg-'+curr.agre">
+                        <i class="fas fa-biking text-6xl mb-4 text-white/50"></i>
+                        <h2 class="text-3xl font-black uppercase text-center">{{curr.nom}}</h2>
+                        <div class="mt-4 bg-black/20 px-4 py-2 rounded-full font-bold text-sm uppercase tracking-widest">{{curr.agre}} - {{curr.action}}</div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 print-break-inside-avoid">
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 space-y-4">
+                            <h4 class="text-xs font-black uppercase text-blue-700 tracking-widest"><i class="fas fa-question-circle"></i> Comment faire ?</h4>
+                            <ul class="space-y-3"><li v-for="c in curr.criteres_realisation" class="text-sm font-bold text-slate-700 italic flex gap-3"><i class="fas fa-chevron-right text-blue-400 mt-1 shrink-0 text-[10px]"></i> {{ c }}</li></ul>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 space-y-4">
+                            <h4 class="text-xs font-black uppercase text-emerald-700 tracking-widest"><i class="fas fa-check-circle"></i> Je réussis si ...</h4>
+                            <ul class="space-y-3"><li v-for="c in curr.criteres_reussite" class="text-sm font-bold text-slate-700 flex gap-3"><i class="fas fa-check-circle text-emerald-500 mt-1 shrink-0 text-[10px]"></i> {{ c }}</li></ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div v-else-if="view.startsWith('enfant_')" class="text-center py-20">
+                     <h2 class="text-3xl font-black text-green-500 uppercase">Mode Enfant en construction</h2>
+                     <button @click="goHome" class="mt-6 bg-slate-200 px-6 py-2 rounded-xl font-bold">Retour</button>
+                </div>
+
+            </transition>
+        </div>
+    </main>
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            isSidebarOpen: window.innerWidth >= 1024,
+            view: 'home',
+            curr: null,
+            selectedAgre: null,
+            selectedAction: null,
+            circuit: [],
+            openFolders: [],
+            veloData: typeof veloData !== 'undefined' ? veloData : [],
+            actionsData: typeof actionsData !== 'undefined' ? actionsData : []
+        }
+    },
+    computed: {
+        pageTitle() {
+            if (this.curr) return this.curr.nom;
+            if (this.selectedAction) return this.selectedAction;
+            if (this.selectedAgre) return this.selectedAgre;
+            return "SRAV";
+        }
+    },
+    methods: {
+        goHome() { this.view = 'home'; this.curr = null; this.selectedAgre = null; this.selectedAction = null; },
+        handleBack() {
+            if (this.view === 'element') this.view = 'elements_list';
+            else if (this.view === 'elements_list') this.view = 'actions';
+            else this.goHome();
+        },
+        openModeEnfant() { this.view = 'enfant_home'; this.isSidebarOpen = false; },
+        getActions(agre) { return this.veloData.filter(d => d.agre === agre).map(d => d.action).filter((v, i, a) => a.indexOf(v) === i); },
+        getElements(a, ac) { return this.veloData.filter(d => d.agre === a && d.action === ac); },
+        toggleFolder(k) { const i = this.openFolders.indexOf(k); i > -1 ? this.openFolders.splice(i, 1) : this.openFolders.push(k); },
+        selectAgre(agre) { this.selectedAgre = agre; this.view = 'actions'; },
+        selectAction(action) { this.selectedAction = action; this.view = 'elements_list'; },
+        selectElement(el) { this.curr = el; this.view = 'element'; },
+        getDifficultyClass(level) { return "diff-" + Math.min(level.split('⭐').length - 1, 4); }
+    }
+}).mount('#app');
+</script>
+</body>
+</html>
