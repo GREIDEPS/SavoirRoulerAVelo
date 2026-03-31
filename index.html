@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+    <title>Savoir Rouler à Vélo 🚲</title>
+    
+    <script src="libs/tailwindcss.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    screens: { 'xs': '475px' },
+                    animation: { 'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
+                }
+            }
+        }
+    </script>
+    <script src="libs/vue.global.js"></script>
+    <script src="libs/confetti.browser.min.js"></script>
+    <link href="libs/fontawesome/css/all.min.css" rel="stylesheet">
+    <script src="srav_data.js"></script>
+
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .touch-manipulation { touch-action: manipulation; }
+        
+        .bg-BLOC1 { background-color: #3b82f6; } .border-BLOC1 { border-color: #3b82f6; } .text-BLOC1 { color: #3b82f6; }
+        .bg-BLOC2 { background-color: #eab308; } .border-BLOC2 { border-color: #eab308; } .text-BLOC2 { color: #eab308; }
+        .bg-BLOC3 { background-color: #ef4444; } .border-BLOC3 { border-color: #ef4444; } .text-BLOC3 { color: #ef4444; }
+
+        .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease, transform 0.2s ease; }
+        .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateY(5px); }
+        .btn-press:active { transform: scale(0.95); }
+        .hover-lift:hover { transform: translateY(-2px); }
+
+        .diff-1 { background-color: #ecfccb; color: #365314; border: 1px solid #bef264; }
+        .diff-2 { background-color: #fef9c3; color: #713f12; border: 1px solid #fde047; }
+        .diff-3 { background-color: #ffedd5; color: #7c2d12; border: 1px solid #fdba74; }
+        .diff-4 { background-color: #fee2e2; color: #7f1d1d; border: 1px solid #fca5a5; }
+
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        
+        @media print {
+            .no-print { display: none !important; }
+            aside, nav, header, footer { display: none !important; }
+            html, body, #app, main {
+                height: auto !important;
+                overflow: visible !important;
+                background-color: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 12px !important;
+            }
+            .print-break-inside-avoid { 
+                page-break-inside: avoid; 
+                break-inside: avoid; 
+                border: 1px solid #cbd5e1 !important;
+            }
+            .h-full { height: auto !important; }
+            .aspect-video { height: 110px !important; aspect-ratio: auto !important; }
+            .p-4 { padding: 0.5rem !important; }
+            .bg-white.dark\:bg-slate-800.p-6.rounded-\[2\.5rem\] { padding: 0 !important; border: none !important; box-shadow: none !important; margin-bottom: 10px !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 h-screen overflow-hidden font-sans transition-colors duration-300 dark:bg-slate-900 dark:text-slate-100">
+
+<div id="app" class="flex h-full">
+
+    <aside :class="['bg-slate-900 text-white h-full z-40 transition-all flex flex-col shadow-xl absolute lg:relative border-r border-slate-800 no-print', isSidebarOpen ? 'w-80' : 'w-0 overflow-hidden lg:w-0']" aria-label="Menu principal">
+        <div class="p-6 border-b border-slate-800 flex justify-between items-center shrink-0">
+            <h1 class="font-black italic text-xl uppercase tracking-tighter text-blue-400">Savoir Rouler 🚲</h1>
+            <button @click="isSidebarOpen = false" aria-label="Fermer le menu" class="text-slate-500 hover:text-white transition btn-press"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+            <button @click="openModeEnfant" class="w-full text-center p-4 bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-300 hover:to-orange-300 rounded-xl shadow-lg border-2 border-yellow-200 text-white font-black text-sm uppercase transition transform active:scale-95 mb-4">
+                🧸 Parcours Enfant
+            </button>
+
+            <button @click="view = 'circuit'; if(window.innerWidth < 1024) isSidebarOpen = false;" class="w-full text-left p-3 bg-orange-600/20 hover:bg-orange-600/40 rounded-xl flex items-center justify-between text-orange-400 font-black text-xs uppercase transition border border-orange-900/50 hover:border-orange-500/50">
+                <span class="flex items-center gap-3"><i class="fas fa-route"></i> Mon Circuit SRAV</span>
+                <span class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px]">{{ circuit.length }}</span>
+            </button>
+
+            <button @click="openWarmupList" class="w-full text-left p-3 bg-amber-600/20 hover:bg-amber-600/40 rounded-xl flex items-center gap-3 text-amber-400 font-black text-xs uppercase transition border border-amber-900/50 hover:border-amber-500/50">
+                <i class="fas fa-gamepad"></i> Jeux à vélo
+            </button>
+
+            <div v-for="agre in ['BLOC 1', 'BLOC 2', 'BLOC 3']" :key="agre">
+                <div class="flex items-center gap-2 mb-2 text-slate-500 font-black text-[10px] tracking-widest uppercase">
+                    <div :class="['w-2 h-2 rounded-full', 'bg-'+agre.replace(' ', '')]"></div> {{ agre }}
+                </div>
+                <div v-for="action in getActions(agre)" :key="action">
+                    <button @click="toggleFolder(agre+action)" :aria-expanded="openFolders.includes(agre+action).toString()" class="w-full text-left p-2 hover:bg-slate-800 rounded-lg flex justify-between items-center text-xs font-bold transition text-slate-300">
+                        {{ action }} <i :class="['fas fa-chevron-right text-[10px] transition', openFolders.includes(agre+action) ? 'rotate-90 text-blue-400' : '']"></i>
+                    </button>
+                    <div v-show="openFolders.includes(agre+action)" class="ml-4 border-l border-slate-700 pl-2 my-1 space-y-1">
+                        <button v-for="el in getElements(agre, action)" @click="selectElement(el)" :class="['block w-full text-left p-2 text-xs transition rounded', curr?.id === el.id ? 'text-blue-400 font-black bg-slate-800' : 'text-slate-400 hover:text-white hover:bg-slate-800/50']">
+                            {{ el.nom }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-hidden relative bg-slate-50 dark:bg-slate-900 transition-colors duration-300" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
+        
+        <header v-if="!view.startsWith('enfant_')" class="bg-white dark:bg-slate-800 border-b dark:border-slate-700 p-3 flex flex-col gap-2 shadow-sm shrink-0 z-20 relative transition-colors duration-300 no-print">
+            <div class="flex items-center justify-between px-2 lg:px-6 gap-4">
+                <div class="flex items-center gap-3 overflow-hidden flex-1">
+                    <button @click="isSidebarOpen = true" v-show="!isSidebarOpen" aria-label="Ouvrir le menu" class="text-blue-600 dark:text-blue-400 p-2 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-full transition shrink-0">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    
+                    <button v-if="view !== 'home'" @click="handleBack" class="btn-press bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-2 rounded-full border border-slate-300 dark:border-slate-600 shadow-sm flex items-center gap-2 transition shrink-0">
+                        <i class="fas fa-arrow-left text-sm"></i> <span class="text-xs font-black uppercase hidden sm:inline">Retour</span>
+                    </button>
+
+                    <div v-if="view === 'element'" class="flex items-center shrink-0 shadow-sm rounded-full">
+                        <button @click="goToPrevElement" :disabled="!hasPrevElement" :class="['btn-press px-3 py-2 rounded-l-full border transition flex items-center justify-center', hasPrevElement ? 'bg-white dark:bg-slate-700 hover:bg-blue-50 text-blue-600 cursor-pointer' : 'bg-slate-50 text-slate-300 cursor-not-allowed']">
+                            <i class="fas fa-chevron-left text-sm"></i>
+                        </button>
+                        <button @click="goToNextElement" :disabled="!hasNextElement" :class="['btn-press px-3 py-2 rounded-r-full border-y border-r transition flex items-center justify-center', hasNextElement ? 'bg-white dark:bg-slate-700 hover:bg-blue-50 text-blue-600 cursor-pointer' : 'bg-slate-50 text-slate-300 cursor-not-allowed']">
+                            <i class="fas fa-chevron-right text-sm"></i>
+                        </button>
+                    </div>
+                    <h1 class="font-black uppercase tracking-tight text-sm md:text-xl truncate text-slate-800 dark:text-white">{{ pageTitle }}</h1>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                    <button @click="toggleDarkMode" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 text-amber-500 dark:text-blue-300 flex items-center justify-center transition hover:scale-110">
+                        <i :class="['fas', isDarkMode ? 'fa-moon' : 'fa-sun']"></i>
+                    </button>
+                    <button @click="goHome" class="btn-press bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg shadow-md text-[10px] font-black uppercase tracking-widest transition-all ml-2">
+                        <i class="fas fa-home"></i> <span class="hidden xs:inline">Accueil</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div v-if="breadcrumbs.length > 0" class="px-4 lg:px-10 flex items-center gap-2 text-[10px] font-bold text-slate-400 dark:text-slate-500 overflow-x-auto hide-scrollbar whitespace-nowrap">
+                <span @click="goHome" class="cursor-pointer hover:text-blue-500"><i class="fas fa-home"></i></span>
+                <template v-for="(crumb, index) in breadcrumbs" :key="index">
+                    <i class="fas fa-chevron-right text-[8px]"></i>
+                    <span @click="crumb.action ? crumb.action() : null" :class="['uppercase tracking-wide', crumb.action ? 'cursor-pointer hover:text-blue-500 hover:underline' : 'text-slate-600 dark:text-slate-300']">
+                        {{ crumb.text }}
+                    </span>
+                </template>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 lg:p-10 pb-24 lg:pb-10 scroll-smooth" ref="mainScroll" :class="view.startsWith('enfant_') ? 'bg-sky-50 dark:bg-slate-900' : ''">
+            <transition name="fade" mode="out-in">
+                
+                <div v-if="view === 'enfant_home'" key="enfant_home" class="max-w-5xl mx-auto space-y-6 pb-20">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-[2rem] shadow-md border-4 border-yellow-300 flex-wrap gap-4">
+                        <h2 class="text-xl md:text-3xl font-black uppercase text-blue-600 tracking-tight">🧸 Parcours Animaux SRAV</h2>
+                        <div class="flex items-center gap-3">
+                            <button @click="view = 'enfant_recap'" class="bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-4 py-2 rounded-xl font-black shadow-sm active:scale-95 transition text-xs md:text-sm flex items-center gap-2">
+                                <span class="text-lg">🏆</span> Médailles
+                                <span v-if="reussitesEnfant.length" class="bg-white px-2 py-0.5 rounded-full">{{ reussitesEnfant.length }}</span>
+                            </button>
+                            <button @click="goHome" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl font-black shadow-sm active:scale-95 transition text-xs md:text-sm">Quitter</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                        <div v-for="animal in animauxEnfant" :key="animal.id" @click="selectEnfantAnimal(animal)" class="bg-white rounded-[2.5rem] shadow-xl border-b-8 active:translate-y-2 transition cursor-pointer flex flex-col items-center justify-center p-6 text-center hover:scale-105" :style="{'border-color': animal.color}">
+                            <span class="text-6xl md:text-8xl mb-2 drop-shadow-md">{{ animal.emoji }}</span>
+                            <h3 class="text-lg md:text-2xl font-black uppercase tracking-widest mt-2" :style="{'color': animal.color}">{{ animal.nom }}</h3>
+                            <p class="text-xs md:text-sm font-bold text-slate-500 mt-1">{{ animal.desc }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'enfant_liste'" key="enfant_liste" class="max-w-6xl mx-auto space-y-6 pb-20">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-[2rem] shadow-md border-4" :style="{'border-color': enfantAnimal.color}">
+                        <button @click="handleBack" class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 active:scale-95"><i class="fas fa-arrow-left text-xl"></i></button>
+                        <h2 class="text-2xl md:text-4xl font-black uppercase flex items-center gap-3" :style="{'color': enfantAnimal.color}">
+                            {{ enfantAnimal.emoji }} {{ enfantAnimal.nom }}
+                        </h2>
+                        <div class="w-12"></div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div v-for="el in currentEnfantList" :key="el.id" @click="selectEnfantElement(el)" class="bg-white rounded-[2.5rem] shadow-lg overflow-hidden border-4 border-transparent hover:border-blue-400 cursor-pointer active:scale-95 transition flex flex-col relative">
+                            <div v-if="reussitesEnfant.includes(el.id)" class="absolute top-3 right-3 z-10 text-3xl drop-shadow-md">🏆</div>
+                            <img :src="'images/' + (el.media.face || el.media.profil)" @error="handleImgError" loading="lazy" class="w-full h-48 object-contain bg-slate-50 p-2 border-b-4 border-slate-100">
+                            <div class="p-6 text-center flex-1 flex flex-col justify-center">
+                                <h3 class="font-black text-xl text-slate-800 uppercase leading-tight">{{ el.nom }}</h3>
+                            </div>
+                        </div>
+                        <div v-if="currentEnfantList.length === 0" class="col-span-full text-center text-slate-500 py-10 font-bold">Aucun exercice trouvé pour cet animal.</div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'enfant_element' && curr" key="enfant_element" class="max-w-4xl mx-auto space-y-6 pb-20">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-[2rem] shadow-md border-4" :style="{'border-color': enfantAnimal.color}">
+                        <button @click="handleBack" class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 active:scale-95"><i class="fas fa-arrow-left text-xl"></i></button>
+                        <h2 class="text-xl md:text-3xl font-black uppercase text-slate-800 text-center">
+                            {{ curr.nom }}
+                            <span v-if="reussitesEnfant.includes(curr.id)" class="ml-2 text-2xl">🏆</span>
+                        </h2>
+                        <div class="w-12"></div>
+                    </div>
+                    <div class="bg-white rounded-[3rem] p-4 md:p-8 shadow-2xl border-b-8" :style="{'border-color': enfantAnimal.color}">
+                        <img :src="'images/' + (curr.media.face || curr.media.profil)" @error="handleImgError" class="w-full h-auto max-h-[50vh] object-contain rounded-2xl mb-8">
+                        <div class="flex flex-col md:flex-row gap-4 items-center justify-center">
+                            <button @click="speakElement(curr)" class="w-full md:w-auto flex-1 bg-blue-500 hover:bg-blue-600 text-white p-6 rounded-[2rem] font-black uppercase text-xl md:text-2xl shadow-lg active:scale-95 transition flex items-center justify-center gap-4">
+                                <i class="fas fa-volume-up text-3xl"></i> Écouter
+                            </button>
+                            <button @click="toggleReussiteEnfant(curr.id)" :class="reussitesEnfant.includes(curr.id) ? 'bg-amber-500 hover:bg-amber-600' : 'bg-green-500 hover:bg-green-600'" class="w-full md:w-auto flex-1 text-white p-6 rounded-[2rem] font-black uppercase text-xl md:text-2xl shadow-lg active:scale-95 transition flex items-center justify-center gap-4">
+                                <i class="fas text-3xl" :class="reussitesEnfant.includes(curr.id) ? 'fa-medal' : 'fa-check-circle'"></i> 
+                                {{ reussitesEnfant.includes(curr.id) ? 'C\'est gagné !' : 'J\'ai réussi !' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'enfant_recap'" key="enfant_recap" class="max-w-6xl mx-auto space-y-6 pb-20">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-[2rem] shadow-md border-4 border-yellow-400">
+                        <button @click="handleBack" class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 active:scale-95 hover:bg-slate-200"><i class="fas fa-arrow-left text-xl"></i></button>
+                        <h2 class="text-2xl md:text-4xl font-black uppercase flex items-center gap-3 text-slate-800">🏆 Mes Médailles SRAV</h2>
+                        <div class="w-12"></div>
+                    </div>
+                    <div v-if="recapReussitesEnfant.length === 0" class="text-center py-20 bg-white rounded-[2.5rem] shadow-lg border-4 border-dashed border-slate-200">
+                        <span class="text-7xl mb-4 block">😢</span>
+                        <p class="text-xl font-bold text-slate-500">Tu n'as pas encore de médailles.</p>
+                    </div>
+                    <div v-else class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <div v-for="el in recapReussitesEnfant" :key="'recap_'+el.id" class="bg-white rounded-[2.5rem] shadow-lg overflow-hidden border-4 border-amber-300 relative flex flex-col pt-4 hover:scale-105 transition-transform cursor-pointer" @click="selectEnfantElement(el)">
+                            <div class="absolute top-2 right-2 text-3xl drop-shadow-md">🏆</div>
+                            <div class="absolute top-2 left-2 text-2xl bg-slate-100 rounded-full w-10 h-10 flex items-center justify-center shadow-sm">{{ getAnimalEmoji(el.mode_enfant) }}</div>
+                            <img :src="'images/' + (el.media.face || el.media.profil)" @error="handleImgError" class="w-full h-32 object-contain bg-slate-50 p-2 mt-6">
+                            <div class="p-4 text-center border-t-2 border-slate-50 flex-1 flex items-center justify-center">
+                                <h3 class="font-black text-sm text-slate-800 uppercase leading-tight">{{ el.nom }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'home'" key="home" class="max-w-6xl mx-auto space-y-12">
+                    <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg p-6 md:p-8 md:mx-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 border-t-8 border-blue-500">
+                        <div class="flex-1 text-center md:text-left">
+                            <h2 class="text-xl md:text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-3">
+                                Bienvenue sur Savoir Rouler à Vélo
+                            </h2>
+                            <p class="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                                L’application accompagne l'apprentissage du vélo, de la maîtrise des fondamentaux à la circulation en situation réelle. Elle couvre les 3 blocs du dispositif national de formation.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-10">
+                        <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-4 flex items-center gap-2"><i class="fas fa-medal text-yellow-500"></i> Les Défis Maillots</h3>
+                        <div class="grid grid-cols-3 gap-4 md:gap-6">
+                            <div v-for="m in ['MAILLOT BLANC', 'MAILLOT VERT', 'MAILLOT JAUNE']" @click="selectMaillot(m)" class="group relative bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 hover:-translate-y-2 aspect-square" :class="getMaillotBorder(m)">
+                                <img :src="'images/' + m + '.jpg'" @error="handleImgError" :alt="m" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                <div class="absolute bottom-0 w-full bg-black/60 text-white text-center text-xs md:text-sm font-black py-2 backdrop-blur-sm">{{m}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tight mb-4 flex items-center gap-2"><i class="fas fa-layer-group text-blue-500"></i> Les Blocs SRAV</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                            <div v-for="a in ['BLOC 1', 'BLOC 2', 'BLOC 3']" @click="selectAgre(a)" :class="['group relative bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 hover:-translate-y-2 aspect-square', 'border-'+a.replace(' ', '')]">
+                                <img :src="'images/SRAV - ' + a + '.webp'" @error="handleImgError" :alt="'Bloc ' + a" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                <div class="absolute bottom-0 w-full bg-black/60 text-white text-center text-xs md:text-sm font-black py-2 backdrop-blur-sm">{{a}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center md:px-10 gap-6">
+                        <div @click="openDocText('Livret_SRAV.pdf')" class="group w-full md:w-1/2 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 border-indigo-500 hover:-translate-y-2 aspect-video relative flex items-center justify-center flex-col gap-4">
+                            <i class="fas fa-file-pdf text-indigo-500 text-6xl"></i>
+                            <span class="font-black uppercase text-slate-600">Livret SRAV (PDF)</span>
+                        </div>
+                        <div @click="openWarmupList" class="group w-full md:w-1/2 bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 border-amber-500 hover:-translate-y-2 aspect-video relative flex items-center justify-center flex-col gap-4">
+                            <i class="fas fa-gamepad text-amber-500 text-6xl"></i>
+                            <span class="font-black uppercase text-slate-600">Jeux à vélo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'maillot_liste'" key="maillot_liste" class="max-w-6xl mx-auto space-y-6 pb-20">
+                    <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700">
+                        <h2 class="text-xl md:text-2xl font-black uppercase tracking-tight flex items-center gap-3">
+                            <i class="fas fa-tshirt"></i> {{ selectedMaillot }}
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div v-for="g in currentMaillotGames" :key="g.nom_exercice" @click="openMaillotGame(g)" class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md border-b-4 cursor-pointer hover:scale-105 transition-transform p-6 flex flex-col justify-center relative" :class="getMaillotBorder(selectedMaillot)">
+                            <span class="absolute top-3 right-3 text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-full font-black uppercase">{{ g.etape }}</span>
+                            <h3 class="font-black text-slate-800 dark:text-white uppercase text-lg mb-2 pr-12">{{ g.nom_exercice }}</h3>
+                            <p class="text-[10px] md:text-xs font-bold text-blue-500 uppercase tracking-widest"><i class="fas fa-bullseye"></i> {{ g.competences }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'maillot_detail' && selectedMaillotGame" key="maillot_detail" class="max-w-4xl mx-auto pb-20">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border-t-8 flex-grow" :class="getMaillotBorder(selectedMaillot)">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1 rounded-full text-xs font-black tracking-widest">{{ selectedMaillotGame.etape }}</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-black uppercase text-slate-800 dark:text-white mb-2">{{ selectedMaillotGame.nom_exercice }}</h2>
+                        <p class="text-sm font-bold text-blue-500 uppercase tracking-widest mb-8"><i class="fas fa-bullseye"></i> {{ selectedMaillotGame.competences }}</p>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-2xl border border-emerald-100 dark:border-emerald-800">
+                                <h3 class="text-emerald-600 dark:text-emerald-400 font-black uppercase text-sm tracking-widest mb-2"><i class="fas fa-flag-checkered"></i> Le But</h3>
+                                <p class="text-slate-700 dark:text-slate-200 leading-relaxed font-medium">{{ selectedMaillotGame.but }}</p>
+                            </div>
+                            
+                            <div class="bg-blue-50 dark:bg-slate-700 p-5 rounded-2xl border border-blue-100 dark:border-slate-600">
+                                <h3 class="text-blue-600 dark:text-blue-400 font-black uppercase text-sm tracking-widest mb-2"><i class="fas fa-clipboard-list"></i> Les Contenus</h3>
+                                <p class="text-slate-700 dark:text-slate-200 leading-relaxed font-medium">{{ selectedMaillotGame.contenus }}</p>
+                            </div>
+
+                            <div v-if="selectedMaillotGame.evolutions" class="bg-slate-50 dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                                <h3 class="text-slate-500 dark:text-slate-400 font-black uppercase text-sm tracking-widest mb-2"><i class="fas fa-level-up-alt"></i> Les Évolutions</h3>
+                                <p class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium">{{ selectedMaillotGame.evolutions }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'warmup'" key="warmup" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div v-for="w in warmups" @click="openWarmupDetail(w)" class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-md overflow-hidden hover:scale-105 transition-all cursor-pointer border-2 border-transparent hover:border-amber-400">
+                        <div class="p-8 text-center">
+                            <i class="fas fa-bicycle text-amber-500 text-4xl mb-4"></i>
+                            <div class="font-bold text-lg uppercase text-slate-700 dark:text-slate-300 leading-tight">{{ w.nom }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'warmup_detail' && selectedWarmup" key="warmup_detail" class="max-w-4xl mx-auto pb-20">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border-l-8 border-amber-500 flex-grow">
+                        <h3 class="text-amber-700 dark:text-amber-500 font-black uppercase text-sm tracking-widest mb-6 flex items-center gap-3"><i class="fas fa-book-open text-xl"></i> Règles du jeu</h3>
+                        <div class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium whitespace-pre-line italic text-lg">{{ selectedWarmup.histoire }}</div>
+                    </div>
+                </div>
+                
+                <div v-else-if="view === 'actions'" key="actions" class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div v-for="act in actionsData[selectedAgre]" @click="selectAction(act.nom)" :class="['group bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all cursor-pointer overflow-hidden border-b-8 hover:-translate-y-2 aspect-square', 'border-'+selectedAgre.replace(' ', '')]">
+                        <div class="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-700 relative">
+                            <img v-if="act.img" :src="'images/' + act.img" @error="handleImgError" :alt="act.nom" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-300">
+                            <div class="text-center text-sm md:text-base font-black text-slate-700 dark:text-white uppercase z-10 drop-shadow-md">{{act.nom}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'elements_list'" key="elements_list" class="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div v-for="el in getElements(selectedAgre, selectedAction)" @click="selectElement(el)" class="bg-white dark:bg-slate-800 rounded-[2rem] shadow-md overflow-hidden hover:border-blue-500 border-2 border-transparent cursor-pointer transition p-2 hover-lift relative">
+                        <div v-if="isInCircuit(el.id)" class="absolute top-2 left-2 z-10 bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center shadow-md border border-white"><i class="fas fa-check text-[10px]"></i></div>
+                        <div v-if="el.difficulte" :class="getDifficultyClass(el.difficulte)" class="absolute top-3 right-3 z-10 px-2 py-1 rounded-full text-[10px] font-black uppercase shadow-sm border">{{ el.difficulte }}</div>
+                        <img :src="'images/' + (el.media.face || el.media.profil)" @error="handleImgError" :alt="el.nom" class="w-full aspect-video object-contain bg-slate-100 rounded-xl p-2">
+                        <div class="p-4 text-center font-bold text-[11px] uppercase text-slate-700 dark:text-slate-200">{{ el.nom }}</div>
+                    </div>
+                </div>
+
+                <div v-else-if="view === 'circuit'" key="circuit" class="max-w-6xl mx-auto space-y-8 pb-20">
+                    <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-6 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700">
+                        <h2 class="text-xl md:text-2xl font-black uppercase tracking-tight text-orange-500 flex items-center gap-3"><i class="fas fa-route"></i> Mon Circuit SRAV</h2>
+                        <button v-if="circuit.length" @click="clearCircuit" class="text-xs font-black text-rose-500 uppercase hover:underline no-print">Tout effacer</button>
+                    </div>
+                    <div v-if="circuitElements.length === 0" class="text-center py-20 bg-white dark:bg-slate-800 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-700">
+                        <i class="fas fa-route text-4xl text-slate-300 mb-4"></i>
+                        <p class="text-slate-500 font-bold uppercase text-sm">Aucun atelier dans votre circuit.</p>
+                    </div>
+                    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div v-for="el in circuitElements" :key="el.id" class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md border border-slate-100 dark:border-slate-700 relative print-break-inside-avoid flex flex-col h-full">
+                            <button @click.stop="toggleCircuit(el.id)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white text-rose-500 shadow flex items-center justify-center hover:bg-rose-50 transition no-print z-10"><i class="fas fa-trash"></i></button>
+                            <div class="p-4 flex-1 flex flex-col">
+                                <span :class="['text-[10px] font-black px-2 py-1 rounded border inline-block w-max mb-2', 'bg-'+el.agre.replace(' ', '')+'/10 text-'+el.agre.replace(' ', '')+' border-'+el.agre.replace(' ', '')+'/20']">{{ el.agre }}</span>
+                                <h3 class="font-black text-slate-800 dark:text-white uppercase text-sm">{{ el.nom }}</h3>
+                                <p class="text-[10px] text-slate-500 uppercase mt-1 mb-2">{{ el.action }}</p>
+                                <div class="mt-auto text-left bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                    <h4 class="text-[9px] font-black uppercase text-blue-500 mb-1">Critères d'évaluation</h4>
+                                    <ul class="space-y-1">
+                                        <li v-for="c in el.criteres_reussite" :key="c" class="text-[9px] text-slate-600 flex items-start gap-1 leading-tight">
+                                            <i class="fas fa-check text-emerald-500 mt-[2px] shrink-0"></i> <span>{{ c }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button v-if="circuit.length" onclick="window.print()" class="no-print w-full py-4 bg-slate-900 text-white rounded-[2rem] font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-3"><i class="fas fa-print"></i> Imprimer la fiche d'évaluation</button>
+                </div>
+
+                <div v-else-if="view === 'element' && curr" key="element" class="max-w-5xl mx-auto space-y-8 pb-20">
+                    <div class="flex justify-between items-center gap-4 bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 no-print">
+                        <button @click="toggleCircuit(curr.id)" :class="['flex-1 py-2 rounded-2xl text-[10px] sm:text-xs font-black uppercase transition flex items-center justify-center gap-2 border', isInCircuit(curr.id) ? 'bg-orange-500 text-white border-orange-400' : 'bg-orange-50 text-orange-600 border-orange-200']">
+                           <i :class="['fas', isInCircuit(curr.id) ? 'fa-check' : 'fa-plus']"></i> {{ isInCircuit(curr.id) ? 'Dans mon circuit' : 'Ajouter au circuit' }}
+                        </button>
+                        <button @click="speakElement(curr)" class="shrink-0 px-4 py-2 rounded-2xl bg-blue-50 text-blue-600 border border-blue-200 transition flex items-center justify-center gap-2 text-[10px] sm:text-xs font-black uppercase">
+                            <i class="fas fa-volume-up text-base"></i> <span class="hidden sm:inline">Écouter</span>
+                        </button>
+                    </div>
+
+                    <div v-if="curr.securite" class="bg-amber-50 p-5 rounded-[2.5rem] border-2 border-amber-400 shadow-sm flex items-center gap-6 print-break-inside-avoid">
+                        <div class="shrink-0 w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center text-amber-500 text-3xl"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="flex-1">
+                            <h4 class="text-amber-600 font-black uppercase text-lg tracking-widest mb-1">Sécurité</h4>
+                            <p class="text-slate-700 text-sm font-bold leading-relaxed">{{ curr.securite }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 print-break-inside-avoid">
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 space-y-4">
+                            <h4 class="text-xs font-black uppercase text-blue-700 dark:text-blue-400 tracking-widest"><i class="fas fa-question-circle"></i> A observer</h4>
+                            <ul class="space-y-3"><li v-for="c in curr.criteres_realisation" class="text-sm font-bold text-slate-700 dark:text-slate-300 italic flex gap-3"><i class="fas fa-chevron-right text-blue-400 mt-1 shrink-0 text-[10px]"></i> {{ c }}</li></ul>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 space-y-4">
+                            <h4 class="text-xs font-black uppercase text-emerald-700 dark:text-emerald-400 tracking-widest"><i class="fas fa-check-circle"></i> Réussite validée si ...</h4>
+                            <ul class="space-y-3"><li v-for="c in curr.criteres_reussite" class="text-sm font-bold text-slate-700 dark:text-slate-300 flex gap-3"><i class="fas fa-check-circle text-emerald-500 mt-1 shrink-0 text-[10px]"></i> {{ c }}</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+            
+            <footer v-if="!view.startsWith('enfant_')" class="mt-20 pt-10 border-t-2 border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-center justify-between gap-8 pb-4 no-print">
+                <div class="flex flex-col items-center md:items-end gap-4 text-sm text-slate-500">
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <a href="auteurs.pdf" target="_blank" class="hover:text-blue-600 font-bold transition flex items-center gap-1.5"><i class="fas fa-file-pdf text-rose-500"></i> Auteurs</a>
+                        <span>|</span>
+                        <a href="mentions-legales.pdf" target="_blank" class="hover:text-blue-600 font-bold transition flex items-center gap-1.5"><i class="fas fa-file-pdf text-rose-500"></i> Mentions légales</a>
+                        <span>|</span>
+                        <a href="mailto:contact@srav.fr" class="hover:text-blue-600 font-bold transition flex items-center gap-1.5 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100"><i class="fas fa-envelope text-blue-500"></i> Contact</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            isSidebarOpen: true,
+            view: 'home',
+            isDarkMode: false,
+            searchQuery: '',
+            curr: null,
+            selectedAgre: null,
+            selectedAction: null,
+            selectedWarmup: null,
+            
+            selectedMaillot: null,
+            selectedMaillotGame: null,
+            maillotsData: typeof maillotsData !== 'undefined' ? maillotsData : [],
+
+            circuit: JSON.parse(localStorage.getItem('srav_circuit') || '[]'),
+            enfantAnimal: null,
+            
+            animauxEnfant: [
+                { id: 'guepard', nom: 'Guépard', emoji: '🐆', desc: 'Je pilote et vais vite', color: '#eab308' },
+                { id: 'tortue', nom: 'Tortue', emoji: '🐢', desc: 'Je roule doucement', color: '#22c55e' },
+                { id: 'singe', nom: 'Singe', emoji: '🐒', desc: 'Je suis agile', color: '#f97316' },
+                { id: 'chouette', nom: 'Chouette', emoji: '🦉', desc: 'J\'observe', color: '#3b82f6' }
+            ],
+            
+            reussitesEnfant: JSON.parse(localStorage.getItem('srav_reussites_enfant') || '[]'),
+            touchStartX: 0, touchStartY: 0, touchEndX: 0, touchEndY: 0, openFolders: [],
+            warmups: typeof warmupsData !== 'undefined' ? warmupsData : [],
+            actionsData: typeof actionsData !== 'undefined' ? actionsData : [],
+            sravDB: typeof sravData !== 'undefined' ? sravData : []
+        }
+    },
+    computed: {
+        pageTitle() {
+            if (this.view === 'circuit') return "MON CIRCUIT SRAV";
+            if (this.view === 'warmup') return "JEUX VÉLO";
+            if (this.view === 'maillot_liste') return this.selectedMaillot;
+            if (this.view === 'maillot_detail') return this.selectedMaillotGame?.nom_exercice;
+            if (this.curr) return this.curr.nom;
+            if (this.selectedAction) return this.selectedAction;
+            if (this.selectedAgre) return this.selectedAgre;
+            return "SAVOIR ROULER À VÉLO";
+        },
+        circuitElements() { return this.circuit.map(id => this.sravDB.find(el => el.id === id)).filter(Boolean); },
+        currentContextList() {
+            if (!this.curr) return [];
+            if (this.view.startsWith('enfant_')) return this.currentEnfantList;
+            return this.getElements(this.selectedAgre, this.selectedAction);
+        },
+        currentElementIndex() { if (!this.curr) return -1; return this.currentContextList.findIndex(el => el.id === this.curr.id); },
+        hasPrevElement() { return this.currentElementIndex > 0; },
+        hasNextElement() { return this.currentElementIndex >= 0 && this.currentElementIndex < this.currentContextList.length - 1; },
+        currentEnfantList() {
+            if (!this.enfantAnimal) return [];
+            return this.sravDB.filter(el => el.mode_enfant === this.enfantAnimal.id);
+        },
+        recapReussitesEnfant() { return this.sravDB.filter(el => this.reussitesEnfant.includes(el.id)); },
+        currentMaillotGames() {
+            if(!this.selectedMaillot) return [];
+            return this.maillotsData.filter(g => g.maillot === this.selectedMaillot);
+        },
+        breadcrumbs() {
+            const crumbs = [];
+            if(this.view === 'home' || this.view.startsWith('enfant_')) return [];
+            
+            if(this.view === 'element' || this.view === 'elements_list' || this.view === 'actions') {
+                if(this.selectedAgre) crumbs.push({ text: this.selectedAgre, action: () => { this.selectAgre(this.selectedAgre); } });
+                if(this.selectedAction && this.view !== 'actions') crumbs.push({ text: this.selectedAction, action: () => { this.selectAction(this.selectedAction); } });
+            }
+            if(this.view === 'maillot_detail') {
+                crumbs.push({ text: this.selectedMaillot, action: () => { this.view = 'maillot_liste'; } });
+            }
+            return crumbs;
+        }
+    },
+    methods: {
+        goHome() { 
+            this.view = 'home'; this.curr = null; this.selectedAgre = null; this.selectedAction = null; 
+            this.selectedWarmup = null; this.selectedMaillot = null; this.selectedMaillotGame = null;
+        },
+        handleBack() {
+            if (this.view === 'enfant_element') { this.view = 'enfant_liste'; }
+            else if (this.view === 'enfant_liste' || this.view === 'enfant_recap') { this.view = 'enfant_home'; }
+            else if (this.view === 'element') { this.selectedAction ? this.view = 'elements_list' : this.goHome(); }
+            else if (this.view === 'elements_list') { this.view = 'actions'; }
+            else if (this.view === 'maillot_detail') { this.view = 'maillot_liste'; }
+            else if (this.view === 'maillot_liste') { this.goHome(); }
+            else this.goHome();
+            this.scrollToTop();
+        },
+        openModeEnfant() { this.view = 'enfant_home'; this.isSidebarOpen = false; },
+        selectEnfantAnimal(animal) { this.enfantAnimal = animal; this.view = 'enfant_liste'; this.scrollToTop(); },
+        selectEnfantElement(el) { this.curr = el; this.view = 'enfant_element'; this.scrollToTop(); },
+        
+        selectMaillot(m) {
+            this.selectedMaillot = m;
+            this.view = 'maillot_liste';
+            this.scrollToTop();
+        },
+        openMaillotGame(g) {
+            this.selectedMaillotGame = g;
+            this.view = 'maillot_detail';
+            this.scrollToTop();
+        },
+        getMaillotBorder(m) {
+            if(m === 'MAILLOT BLANC') return 'border-slate-300';
+            if(m === 'MAILLOT VERT') return 'border-emerald-500';
+            if(m === 'MAILLOT JAUNE') return 'border-yellow-400';
+            return 'border-blue-500';
+        },
+
+        toggleReussiteEnfant(id) {
+            const index = this.reussitesEnfant.indexOf(id);
+            if (index > -1) { this.reussitesEnfant.splice(index, 1); } 
+            else { this.reussitesEnfant.push(id); this.triggerConfetti(); }
+            localStorage.setItem('srav_reussites_enfant', JSON.stringify(this.reussitesEnfant));
+        },
+        triggerConfetti() {
+            if(typeof confetti !== 'undefined') {
+                confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, disableForReducedMotion: true });
+            }
+        },
+        getAnimalEmoji(animalId) { return this.animauxEnfant.find(a => a.id === animalId)?.emoji || '❓'; },
+        toggleCircuit(id) {
+            const index = this.circuit.indexOf(id);
+            if (index === -1) { this.circuit.push(id); } else { this.circuit.splice(index, 1); }
+            localStorage.setItem('srav_circuit', JSON.stringify(this.circuit));
+        },
+        isInCircuit(id) { return this.circuit.includes(id); },
+        clearCircuit() { if(confirm("Voulez-vous vraiment vider l'atelier ?")) { this.circuit = []; localStorage.setItem('srav_circuit', '[]'); } },
+        speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'fr-FR'; window.speechSynthesis.speak(utterance);
+            }
+        },
+        speakElement(el) {
+            let t = `Compétence : ${el.nom}. Objectif : ${el.criteres_reussite.join('. ')}.`;
+            this.speak(t);
+        },
+        getActions(agre) { return [...new Set(this.sravDB.filter(d => d.agre === agre).map(d => d.action))]; },
+        getElements(a, ac) { return this.sravDB.filter(d => d.agre === a && d.action === ac); },
+        getDifficultyClass(level) { return "diff-1"; },
+        toggleFolder(k) { const i = this.openFolders.indexOf(k); i > -1 ? this.openFolders.splice(i, 1) : this.openFolders.push(k); },
+        selectAgre(agre) { this.selectedAgre = agre; this.view = 'actions'; },
+        selectAction(action) { this.selectedAction = action; this.view = 'elements_list'; },
+        selectElement(el) {
+            this.curr = el; this.selectedAgre = el.agre; this.selectedAction = el.action; this.view = 'element';
+            if(window.innerWidth < 1024) this.isSidebarOpen = false;
+            this.scrollToTop();
+        },
+        goToPrevElement() { if (this.hasPrevElement) this.selectElement(this.currentContextList[this.currentElementIndex - 1]); },
+        goToNextElement() { if (this.hasNextElement) this.selectElement(this.currentContextList[this.currentElementIndex + 1]); },
+        openWarmupList() { this.view = 'warmup'; this.selectedWarmup = null; if(window.innerWidth < 1024) this.isSidebarOpen = false; },
+        openWarmupDetail(w) { this.selectedWarmup = w; this.view = 'warmup_detail'; },
+        scrollToTop() { this.$nextTick(() => { if(this.$refs.mainScroll) this.$refs.mainScroll.scrollTop = 0; }); },
+        openDocText(filename) { window.open('docs/' + filename, '_blank'); },
+        toggleDarkMode() {
+            this.isDarkMode = !this.isDarkMode;
+            if (this.isDarkMode) document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+            localStorage.setItem('srav_theme', this.isDarkMode ? 'dark' : 'light');
+        },
+        handleTouchStart(e) { this.touchStartX = e.changedTouches[0].screenX; this.touchStartY = e.changedTouches[0].screenY; },
+        handleTouchEnd(e) { this.touchEndX = e.changedTouches[0].screenX; this.touchEndY = e.changedTouches[0].screenY; this.handleSwipe(); },
+        handleSwipe() {
+            const diffX = this.touchStartX - this.touchEndX; const diffY = this.touchStartY - this.touchEndY;
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                if (this.view === 'element' && this.curr) { diffX > 0 && this.hasNextElement ? this.goToNextElement() : diffX < 0 && this.hasPrevElement ? this.goToPrevElement() : null; }
+                else if (this.view === 'enfant_element' && this.curr) { diffX > 0 && this.hasNextElement ? this.selectEnfantElement(this.currentContextList[this.currentElementIndex + 1]) : diffX < 0 && this.hasPrevElement ? this.selectEnfantElement(this.currentContextList[this.currentElementIndex - 1]) : null; }
+            }
+        },
+        handleImgError(e) { e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E"; }
+    },
+    mounted() {
+        if(window.innerWidth < 1024) this.isSidebarOpen = false;
+        if(localStorage.getItem('srav_theme') === 'dark') { this.isDarkMode = true; document.documentElement.classList.add('dark'); }
+    }
+}).mount('#app');
+</script>
+</body>
+</html>
