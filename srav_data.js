@@ -4,112 +4,347 @@
 // Les défis Maillots (Blanc, Vert, Jaune)
 const maillotsData = [
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Arrêt sur image",
-        competences: "Démarrer un pied au sol. Conduire un vélo en ligne droite. Ralentir, freiner et s'arrêter dans une zone délimitée.",
-        but: "Effectuer l'aller-retour en respectant les arrêts sans poser le pied au 1/2 tour",
-        contenus: "Réguler sa vitesse. Freiner avec les 2 mains en même temps. Ralentir pour faire le 1/2 tour en regardant loin devant. Rouler en ligne droite devant soi.",
-        evolutions: "S'arrêter avant de faire le 1/2 tour. Alterner les pieds d'appuis au départ. Utiliser 2 doigts maximum sur les freins. Utiliser le frein arrière au 1er plot et le frein avant au 2e."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 1", 
+        nom_exercice: "Arrêt sur image",
+        video: "MAILLOT BLANC - ETAPE 1 - ARRET IMAGE.mp4",
+        competences: [
+            "Démarrer un pied au sol", 
+            "Conduire un vélo en ligne droite", 
+            "Ralentir, freiner et s'arrêter dans une zone délimitée"
+        ],
+        but: [
+            "Effectuer l'aller-retour en respectant les arrêts sans poser le pied au 1/2 tour"
+        ],
+        contenus: [
+            "Réguler sa vitesse", 
+            "Freiner avec les 2 mains en même temps", 
+            "Ralentir pour faire le 1/2 tour en regardant loin devant", 
+            "Rouler en ligne droite devant soi"
+        ],
+        evolutions: [
+            "S'arrêter avant de faire le 1/2 tour", 
+            "Alterner les pieds d'appuis au départ", 
+            "Utiliser 2 doigts maximum sur les freins", 
+            "Utiliser le frein arrière au 1er plot et le frein avant au 2e"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Entonnoir",
-        competences: "Démarrer un pied au sol. Conduire un vélo en ligne droite. Ralentir, freiner et s'arrêter dans une zone délimitée.",
-        but: "Sortir de l'entonnoir dans faire tomber les plots",
-        contenus: "Réguler sa vitesse. Conserver son équilibre lors du pédalage. Regarder loin devant.",
-        evolutions: "Jouer sur la largeur de l'entonnoir. Réaliser l'exercice en lâchant une main."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 1", 
+        nom_exercice: "Entonnoir",
+        video: "MAILLOT BLANC - ETAPE 1 - ENTONNOIR.mp4",
+        competences: [
+            "Démarrer un pied au sol", 
+            "Conduire un vélo en ligne droite", 
+            "Ralentir, freiner et s'arrêter dans une zone délimitée"
+        ],
+        but: [
+            "Sortir de l'entonnoir sans faire tomber les plots"
+        ],
+        contenus: [
+            "Réguler sa vitesse", 
+            "Conserver son équilibre lors du pédalage", 
+            "Regarder loin devant"
+        ],
+        evolutions: [
+            "Jouer sur la largeur de l'entonnoir", 
+            "Réaliser l'exercice en lâchant une main"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Slalom",
-        competences: "Conduire un vélo sur un parcours de slalom simple. Prendre des informations en roulant.",
-        but: "Effectuer le slalom dans renverser les plots et sans poser le pied à terre",
-        contenus: "Orienter son regard vers le prochain plot. Réguler sa vitesse. Lever la pédale du côté du virage. Arrêter de pédaler au moment du virage.",
-        evolutions: "Réaliser 5 parcours de longueur différente. Remplacer les plots par des piquets plus haut."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 1", 
+        nom_exercice: "Slalom",
+        video: "MAILLOT BLANC - ETAPE 1 - SLALOM.mp4",
+        competences: [
+            "Conduire un vélo sur un parcours de slalom simple", 
+            "Prendre des informations en roulant"
+        ],
+        but: [
+            "Effectuer le slalom sans renverser les plots et sans poser le pied à terre"
+        ],
+        contenus: [
+            "Orienter son regard vers le prochain plot", 
+            "Réguler sa vitesse", 
+            "Lever la pédale du côté du virage", 
+            "Arrêter de pédaler au moment du virage"
+        ],
+        evolutions: [
+            "Réaliser 5 parcours de longueur différente", 
+            "Remplacer les plots par des piquets plus hauts"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 1", nom_exercice: "Défi d'équipe",
-        competences: "Démarrer un pied au sol. Conduire un vélo sur un parcours de slalom. Prendre des informations en roulant.",
-        but: "Effectuer le slalom sans renverser les plots pour faire gagner des points à son équipe.",
-        contenus: "Orienter son regard vers le prochain plot. Réguler sa vitesse. Arrêter de pédaler au moment du virage.",
-        evolutions: "Changer les équipes. Intégrer un temps limite pour réaliser le slalom."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 1", 
+        nom_exercice: "Défi d'équipe",
+        video: "MAILLOT BLANC - ETAPE 1 - DEFI EQUIPE.mp4",
+        competences: [
+            "Démarrer un pied au sol", 
+            "Conduire un vélo sur un parcours de slalom", 
+            "Prendre des informations en roulant"
+        ],
+        but: [
+            "Effectuer le slalom sans renverser les plots pour faire gagner des points à son équipe"
+        ],
+        contenus: [
+            "Orienter son regard vers le prochain plot", 
+            "Réguler sa vitesse", 
+            "Arrêter de pédaler au moment du virage"
+        ],
+        evolutions: [
+            "Changer les équipes", 
+            "Intégrer un temps limite pour réaliser le slalom"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Virage",
-        competences: "Effectuer un virage à 90°. Changer ses vitesses. Prise d'information en roulant (sonore et/ou visuelle).",
-        but: "Laisser de la distance avec celui qui est devant. Changer de vitesse à chaque plot.",
-        contenus: "Maitriser sa vitesse en regardant son partenaire. Tourner en s'équilibrant. Visualiser le trajet de la roue.",
-        evolutions: "Alterner avec un signal visuel (prise d'information). Faire passer le parcours sur un sol différent (herbe / sable). Modifier la distance du parcours. Intégrer un chronomètre."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 2", 
+        nom_exercice: "Virage",
+        video: "MAILLOT BLANC - ETAPE 2 - VIRAGE.mp4",
+        competences: [
+            "Effectuer un virage à 90°", 
+            "Changer ses vitesses", 
+            "Prise d'information en roulant (sonore et/ou visuelle)"
+        ],
+        but: [
+            "Laisser de la distance avec celui qui est devant", 
+            "Changer de vitesse à chaque plot"
+        ],
+        contenus: [
+            "Maitriser sa vitesse en regardant son partenaire", 
+            "Tourner en s'équilibrant", 
+            "Visualiser le trajet de la roue"
+        ],
+        evolutions: [
+            "Alterner avec un signal visuel (prise d'information)", 
+            "Faire passer le parcours sur un sol différent (herbe / sable)", 
+            "Modifier la distance du parcours", 
+            "Intégrer un chronomètre"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "\"Jacques a dit\"",
-        competences: "Rouler en enlevant un appui. Prendre des information. Etre attentif en roulant.",
-        but: "Réaliser la bonne action en fonction de Jacques a dit",
-        contenus: "Se concentrer pour effectuer la bonne action. Créer de la vitesse pour rester en équilibre. Gérer son espace.",
-        evolutions: "Consignes demandées. Mettre en place un système d'élimination."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 2", 
+        nom_exercice: "\"Jacques a dit\"",
+        video: "MAILLOT BLANC - ETAPE 2 - JACQUES A DIT.mp4",
+        competences: [
+            "Rouler en enlevant un appui", 
+            "Prendre des informations", 
+            "Etre attentif en roulant"
+        ],
+        but: [
+            "Réaliser la bonne action en fonction de Jacques a dit"
+        ],
+        contenus: [
+            "Se concentrer pour effectuer la bonne action", 
+            "Créer de la vitesse pour rester en équilibre", 
+            "Gérer son espace"
+        ],
+        evolutions: [
+            "Consignes demandées", 
+            "Mettre en place un système d'élimination"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "L'escargot",
-        competences: "Conduire son vélo en ligne droite, s'équilibrer, ralentir",
-        but: "Rouler le plus doucement possible sans poser le pied au sol",
-        contenus: "Se mettre droit sur son vélo. Donner de légers coups de pédales pour génerer un peu de vitesse. Positionner ses 2 doigts sur les freins pour pouvoir les utiliser raidement.",
-        evolutions: "Enlever un appui. Réaliser l'exercice assit sur le vélo."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 2", 
+        nom_exercice: "L'escargot",
+        video: "MAILLOT BLANC - ETAPE 2 - ESCARGOT.mp4",
+        competences: [
+            "Conduire son vélo en ligne droite", 
+            "S'équilibrer", 
+            "Ralentir"
+        ],
+        but: [
+            "Rouler le plus doucement possible sans poser le pied au sol"
+        ],
+        contenus: [
+            "Se mettre droit sur son vélo", 
+            "Donner de légers coups de pédales pour génerer un peu de vitesse", 
+            "Positionner ses 2 doigts sur les freins pour pouvoir les utiliser rapidement"
+        ],
+        evolutions: [
+            "Enlever un appui", 
+            "Réaliser l'exercice assis sur le vélo"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "Chaise musicale",
-        competences: "S'équilibrer, ralentir. Etre à l'écoute.",
-        but: "Au coup de sifflet, se rapprocher d'un plot libre pour ne pas se faire éliminer.",
-        contenus: "Etre attentif au coup de sifflet. Diriger son vélo vers un plot libre.",
-        evolutions: "Nombre de plots."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 2", 
+        nom_exercice: "Chaise musicale",
+        video: "MAILLOT BLANC - ETAPE 2 - CHAISE MUSICALE.mp4",
+        competences: [
+            "S'équilibrer", 
+            "Ralentir", 
+            "Etre à l'écoute"
+        ],
+        but: [
+            "Au coup de sifflet, se rapprocher d'un plot libre pour ne pas se faire éliminer"
+        ],
+        contenus: [
+            "Etre attentif au coup de sifflet", 
+            "Diriger son vélo vers un plot libre"
+        ],
+        evolutions: [
+            "Varier le nombre de plots"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 2", nom_exercice: "1, 2, 3 soleil",
-        competences: "Conduire son vélo en ligne droite, s'équilibrer, démarrer un pied au sol, ralentir, freiner, s'arrêter.",
-        but: "Etre le premier à franchir la ligne",
-        contenus: "Se mettre droit sur son vélo. Etre attentif au signal sonore. Freiner rapidement pour poser un appui au sol.",
-        evolutions: "Enlever un pied. Jouer sur la taille de l'espace"
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 2", 
+        nom_exercice: "1, 2, 3 soleil",
+        video: "MAILLOT BLANC - ETAPE 2 - 1 2 3 SOLEIL.mp4",
+        competences: [
+            "Conduire son vélo en ligne droite", 
+            "S'équilibrer", 
+            "Démarrer un pied au sol", 
+            "Ralentir, freiner, s'arrêter"
+        ],
+        but: [
+            "Etre le premier à franchir la ligne"
+        ],
+        contenus: [
+            "Se mettre droit sur son vélo", 
+            "Etre attentif au signal sonore", 
+            "Freiner rapidement pour poser un appui au sol"
+        ],
+        evolutions: [
+            "Enlever un pied", 
+            "Jouer sur la taille de l'espace"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Le cavalier",
-        competences: "Rouler dans un couloir étroit en position cavalier. Conduire son vélo en ligne droite, s'équilibrer.",
-        but: "Rouler dans les 4 couloirs sans sortir et sans toucher de plots.",
-        contenus: "Adapter sa vitesse. S'équilibrer, se félchir. Reculer le bassin au niveau de la selle.",
-        evolutions: "Largeur des couloirs. Temps limite pour franchir les 4 couloirs."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 3", 
+        nom_exercice: "Le cavalier",
+        video: "MAILLOT BLANC - ETAPE 3 - CAVALIER.mp4",
+        competences: [
+            "Rouler dans un couloir étroit en position cavalier", 
+            "Conduire son vélo en ligne droite", 
+            "S'équilibrer"
+        ],
+        but: [
+            "Rouler dans les 4 couloirs sans sortir et sans toucher de plots"
+        ],
+        contenus: [
+            "Adapter sa vitesse", 
+            "S'équilibrer, se fléchir", 
+            "Reculer le bassin au niveau de la selle"
+        ],
+        evolutions: [
+            "Varier la largeur des couloirs", 
+            "Temps limite pour franchir les 4 couloirs"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Tout terrain",
-        competences: "Franchir un petit obstacle",
-        but: "Franchir les obstacles sans toucher avec la roue avant.",
-        contenus: "Adapter sa vitesse. Soulever la roue avant en basculant le poids du corps vers l'arrière. Décoller ses fesses du vélo et tirer le guidon vers soi.",
-        evolutions: "Placer une latte surélevée. Mettre un obstacle dans un virage. Varier les intervalles entre obstacles. Soulever la roue arrière. Monter sur un trottoir."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 3", 
+        nom_exercice: "Tout terrain",
+        video: "MAILLOT BLANC - ETAPE 3 - TOUT TERRAIN.mp4",
+        competences: [
+            "Franchir un petit obstacle"
+        ],
+        but: [
+            "Franchir les obstacles sans toucher avec la roue avant"
+        ],
+        contenus: [
+            "Adapter sa vitesse", 
+            "Soulever la roue avant en basculant le poids du corps vers l'arrière", 
+            "Décoller ses fesses du vélo et tirer le guidon vers soi"
+        ],
+        evolutions: [
+            "Placer une latte surélevée", 
+            "Mettre un obstacle dans un virage", 
+            "Varier les intervalles entre obstacles", 
+            "Soulever la roue arrière", 
+            "Monter sur un trottoir"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Le peloton",
-        competences: "Prendre des informations en roulant",
-        but: "Se trouver dans la zone au même moment.",
-        contenus: "S'adapter à l'espace en groupe. Réguler sa vitesse en fonction des autres. Définir un chef de groupe. Prendre des informations visuelles.",
-        evolutions: "Modifier la taille du groupe, la longueur du circuit."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 3", 
+        nom_exercice: "Le peloton",
+        video: "MAILLOT BLANC - ETAPE 3 - PELOTON.mp4",
+        competences: [
+            "Prendre des informations en roulant"
+        ],
+        but: [
+            "Se trouver dans la zone au même moment"
+        ],
+        contenus: [
+            "S'adapter à l'espace en groupe", 
+            "Réguler sa vitesse en fonction des autres", 
+            "Définir un chef de groupe", 
+            "Prendre des informations visuelles"
+        ],
+        evolutions: [
+            "Modifier la taille du groupe", 
+            "Modifier la longueur du circuit"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉTAPE 3", nom_exercice: "Attaque dans le peloton",
-        competences: "Prendre des informations en roulant. Changer ses vitesses. Prendre un virage à 90°",
-        but: "Suivre \"l'attaque\" du meneur",
-        contenus: "Etre prêt à accélerer en poussant fort sur les pédales. Se mettre en danseuse au moment de l'accélération. Freiner rapidement.",
-        evolutions: "Changer de meneur. Intégrer un virage à 90°."
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉTAPE 3", 
+        nom_exercice: "Attaque dans le peloton",
+        video: "MAILLOT BLANC - ETAPE 3 - ATTAQUE PELOTON.mp4",
+        competences: [
+            "Prendre des informations en roulant", 
+            "Changer ses vitesses", 
+            "Prendre un virage à 90°"
+        ],
+        but: [
+            "Suivre \"l'attaque\" du meneur"
+        ],
+        contenus: [
+            "Etre prêt à accélerer en poussant fort sur les pédales", 
+            "Se mettre en danseuse au moment de l'accélération", 
+            "Freiner rapidement"
+        ],
+        evolutions: [
+            "Changer de meneur", 
+            "Intégrer un virage à 90°"
+        ]
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉVALUATION", nom_exercice: "Evaluation 1",
-        competences: "Toutes",
-        but: "Réaliser le parcours sans erreur",
-        contenus: "",
-        evolutions: ""
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉVALUATION", 
+        nom_exercice: "Evaluation 1",
+        competences: ["Toutes"],
+        but: ["Réaliser le parcours sans erreur"],
+        contenus: [],
+        evolutions: []
     },
     {
-        maillot: "MAILLOT BLANC", etape: "ÉVALUATION", nom_exercice: "Evaluation 2",
-        competences: "Toutes",
-        but: "Réaliser le parcours sans erreur",
-        contenus: "",
-        evolutions: ""
+        maillot: "MAILLOT BLANC", 
+        etape: "ÉVALUATION", 
+        nom_exercice: "Evaluation 2",
+        competences: ["Toutes"],
+        but: ["Réaliser le parcours sans erreur"],
+        contenus: [],
+        evolutions: []
     },
-    { maillot: "MAILLOT VERT", etape: "ÉTAPE 1", nom_exercice: "Balle au camp", competences: "Partager l'espace / Piloter / Lâcher une main", but: "Ramener le plus d'objets possible dans son camp.", contenus: "Deux équipes. Des balles ou petits objets sont placés dans une zone neutre au centre. Aller chercher un objet à la fois.", evolutions: "Intégrer des objets rapportant des points différents." },
-    { maillot: "MAILLOT JAUNE", etape: "ÉTAPE 1", nom_exercice: "Les pinces à linge", competences: "Pilotage / Lâcher une main", but: "Attraper les pinces à linge des autres enfants tout en gardant les siennes.", contenus: "Chaque enfant a des pinces à linge accrochées dans le dos ou sur les manches. Interdiction formelle de tirer sur les vêtements ou de lâcher les deux mains.", evolutions: "Jouer par équipes de couleurs différentes." }
+    { 
+        maillot: "MAILLOT VERT", 
+        etape: "ÉTAPE 1", 
+        nom_exercice: "Balle au camp", 
+        video: "MAILLOT VERT - ETAPE 1 - BALLE AU CAMP.mp4",
+        competences: ["Partager l'espace", "Piloter", "Lâcher une main"], 
+        but: ["Ramener le plus d'objets possible dans son camp"], 
+        contenus: ["Deux équipes", "Des balles ou petits objets sont placés dans une zone neutre au centre", "Aller chercher un objet à la fois"], 
+        evolutions: ["Intégrer des objets rapportant des points différents"] 
+    },
+    { 
+        maillot: "MAILLOT JAUNE", 
+        etape: "ÉTAPE 1", 
+        nom_exercice: "Les pinces à linge", 
+        video: "MAILLOT JAUNE - ETAPE 1 - PINCES A LINGE.mp4",
+        competences: ["Pilotage", "Lâcher une main"], 
+        but: ["Attraper les pinces à linge des autres enfants tout en gardant les siennes"], 
+        contenus: ["Chaque enfant a des pinces à linge accrochées dans le dos ou sur les manches", "Interdiction formelle de tirer sur les vêtements ou de lâcher les deux mains"], 
+        evolutions: ["Jouer par équipes de couleurs différentes"] 
+    }
 ];
 
 const sravData = [
@@ -268,7 +503,7 @@ const actionsData = {
 };
 
 // =========================================================================
-// DONNÉES JEUX / ATELIERS VÉLO (Remplace les échauffements)
+// DONNÉES JEUX / ATELIERS VÉLO
 // =========================================================================
 const warmupsData = [
     {

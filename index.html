@@ -315,7 +315,9 @@
                         <div v-for="g in currentMaillotGames" :key="g.nom_exercice" @click="openMaillotGame(g)" class="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md border-b-4 cursor-pointer hover:scale-105 transition-transform p-6 flex flex-col justify-center relative" :class="getMaillotBorder(selectedMaillot)">
                             <span class="absolute top-3 right-3 text-[10px] bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-full font-black uppercase">{{ g.etape }}</span>
                             <h3 class="font-black text-slate-800 dark:text-white uppercase text-lg mb-2 pr-12">{{ g.nom_exercice }}</h3>
-                            <p class="text-[10px] md:text-xs font-bold text-blue-500 uppercase tracking-widest"><i class="fas fa-bullseye"></i> {{ g.competences }}</p>
+                            <p class="text-[10px] md:text-xs font-bold text-blue-500 uppercase tracking-widest line-clamp-2">
+                                <i class="fas fa-bullseye"></i> {{ g.competences ? g.competences.join(' - ') : '' }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -325,23 +327,39 @@
                         <div class="flex items-center gap-3 mb-2">
                             <span class="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1 rounded-full text-xs font-black tracking-widest">{{ selectedMaillotGame.etape }}</span>
                         </div>
-                        <h2 class="text-2xl md:text-3xl font-black uppercase text-slate-800 dark:text-white mb-2">{{ selectedMaillotGame.nom_exercice }}</h2>
-                        <p class="text-sm font-bold text-blue-500 uppercase tracking-widest mb-8"><i class="fas fa-bullseye"></i> {{ selectedMaillotGame.competences }}</p>
+                        <h2 class="text-2xl md:text-3xl font-black uppercase text-slate-800 dark:text-white mb-6">{{ selectedMaillotGame.nom_exercice }}</h2>
+                        
+                        <div v-if="selectedMaillotGame.video" class="mb-8 rounded-2xl overflow-hidden shadow-lg border-4 border-slate-100 dark:border-slate-700 bg-black flex justify-center">
+                             <video :src="'videos/' + selectedMaillotGame.video" autoplay loop muted playsinline class="w-full max-h-[50vh] object-contain"></video>
+                        </div>
+                        
+                        <div v-if="selectedMaillotGame.competences && selectedMaillotGame.competences.length > 0" class="mb-8">
+                            <p class="text-sm font-bold text-blue-500 uppercase tracking-widest mb-2"><i class="fas fa-bullseye"></i> Compétences :</p>
+                            <ul class="list-disc ml-6 space-y-1 text-slate-600 dark:text-slate-300 text-sm font-medium">
+                                <li v-for="c in selectedMaillotGame.competences" :key="c">{{ c }}</li>
+                            </ul>
+                        </div>
                         
                         <div class="space-y-6">
-                            <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-2xl border border-emerald-100 dark:border-emerald-800">
-                                <h3 class="text-emerald-600 dark:text-emerald-400 font-black uppercase text-sm tracking-widest mb-2"><i class="fas fa-flag-checkered"></i> Le But</h3>
-                                <p class="text-slate-700 dark:text-slate-200 leading-relaxed font-medium">{{ selectedMaillotGame.but }}</p>
+                            <div v-if="selectedMaillotGame.but && selectedMaillotGame.but.length > 0" class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-2xl border border-emerald-100 dark:border-emerald-800">
+                                <h3 class="text-emerald-600 dark:text-emerald-400 font-black uppercase text-sm tracking-widest mb-3"><i class="fas fa-flag-checkered"></i> Le But</h3>
+                                <ul class="list-disc ml-6 space-y-2 text-slate-700 dark:text-slate-200 font-medium">
+                                    <li v-for="b in selectedMaillotGame.but" :key="b">{{ b }}</li>
+                                </ul>
                             </div>
                             
-                            <div class="bg-blue-50 dark:bg-slate-700 p-5 rounded-2xl border border-blue-100 dark:border-slate-600">
-                                <h3 class="text-blue-600 dark:text-blue-400 font-black uppercase text-sm tracking-widest mb-2"><i class="fas fa-clipboard-list"></i> Les Contenus</h3>
-                                <p class="text-slate-700 dark:text-slate-200 leading-relaxed font-medium">{{ selectedMaillotGame.contenus }}</p>
+                            <div v-if="selectedMaillotGame.contenus && selectedMaillotGame.contenus.length > 0" class="bg-blue-50 dark:bg-slate-700 p-5 rounded-2xl border border-blue-100 dark:border-slate-600">
+                                <h3 class="text-blue-600 dark:text-blue-400 font-black uppercase text-sm tracking-widest mb-3"><i class="fas fa-clipboard-list"></i> Les Contenus</h3>
+                                <ul class="list-disc ml-6 space-y-2 text-slate-700 dark:text-slate-200 font-medium">
+                                    <li v-for="c in selectedMaillotGame.contenus" :key="c">{{ c }}</li>
+                                </ul>
                             </div>
 
-                            <div v-if="selectedMaillotGame.evolutions" class="bg-slate-50 dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
-                                <h3 class="text-slate-500 dark:text-slate-400 font-black uppercase text-sm tracking-widest mb-2"><i class="fas fa-level-up-alt"></i> Les Évolutions</h3>
-                                <p class="text-slate-700 dark:text-slate-300 leading-relaxed font-medium">{{ selectedMaillotGame.evolutions }}</p>
+                            <div v-if="selectedMaillotGame.evolutions && selectedMaillotGame.evolutions.length > 0" class="bg-slate-50 dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                                <h3 class="text-slate-500 dark:text-slate-400 font-black uppercase text-sm tracking-widest mb-3"><i class="fas fa-level-up-alt"></i> Les Évolutions</h3>
+                                <ul class="list-disc ml-6 space-y-2 text-slate-700 dark:text-slate-300 font-medium">
+                                    <li v-for="e in selectedMaillotGame.evolutions" :key="e">{{ e }}</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -431,6 +449,10 @@
                         <button @click="speakElement(curr)" class="shrink-0 px-4 py-2 rounded-2xl bg-blue-50 text-blue-600 border border-blue-200 transition flex items-center justify-center gap-2 text-[10px] sm:text-xs font-black uppercase">
                             <i class="fas fa-volume-up text-base"></i> <span class="hidden sm:inline">Écouter</span>
                         </button>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-700 p-4 flex justify-center mb-6">
+                        <img :src="'images/' + (curr.media.face || curr.media.profil)" @error="handleImgError" class="w-full max-h-[40vh] object-contain rounded-2xl">
                     </div>
 
                     <div v-if="curr.securite" class="bg-amber-50 p-5 rounded-[2.5rem] border-2 border-amber-400 shadow-sm flex items-center gap-6 print-break-inside-avoid">
